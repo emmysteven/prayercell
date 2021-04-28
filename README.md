@@ -1,5 +1,5 @@
 
-![Logo](https://github.com/emmysteven/prayercell/server/blob/main/src/main/resources/static/prayercell.png)
+![Logo](https://github.com/emmysteven/prayercell/blob/main/server/src/main/resources/static/prayercell.png)
 
 <div align="center">
 	<img alt="status" src="https://img.shields.io/badge/Status-developing-brightgree">
