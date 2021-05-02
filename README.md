@@ -53,9 +53,11 @@ This project will also help prayer cell leaders:
 
 
 ## Technologies
-- JDK 11
-- Spring Boot
-- Maven Packages
+- OpenJDK 16
+- Spring Boot 2.4.5
+- Gradle 7.0
+- PostgreSQL 13
+- IntelliJ IDEA
 
 ## Features
 - [x] Java Persistence API (JPA)
