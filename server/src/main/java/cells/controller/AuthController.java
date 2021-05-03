@@ -19,16 +19,20 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
-import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 @RestController
-@RequestMapping("/api/auth")
-@CrossOrigin(origins = "http://localhost:4200")
+@RequestMapping("/auth")
+//@CrossOrigin(origins = "http://localhost:4200")
 public class AuthController {
 
     @Autowired
@@ -44,7 +48,7 @@ public class AuthController {
     PasswordEncoder passwordEncoder;
 
     @Autowired
-    JwtTokenProvider tokenProvider;
+    JwtTokenProvider jwtTokenProvider;
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -58,7 +62,7 @@ public class AuthController {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        String jwt = tokenProvider.generateToken(authentication);
+        String jwt = jwtTokenProvider.generateToken(authentication);
         return ResponseEntity.ok(new JwtAuthResponse(jwt));
     }
 
@@ -75,15 +79,43 @@ public class AuthController {
         }
 
         // Creating user's account
-        User user = new User(signUpRequest.getName(), signUpRequest.getUsername(),
-                signUpRequest.getEmail(), signUpRequest.getPassword());
+        User user = new User(
+                signUpRequest.getName(),
+                signUpRequest.getUsername(),
+                signUpRequest.getEmail(),
+                passwordEncoder.encode(signUpRequest.getPassword())
+        );
 
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        Set<String> strRoles = signUpRequest.getRole();
+        Set<Role> roles = new HashSet<>();
 
-        Role userRole = roleRepository.findByName(Roles.ROLE_USER)
-                .orElseThrow(() -> new AppException("User Role not set."));
+        if (strRoles == null) {
+            Role userRole = roleRepository.findByName(Roles.USER)
+                    .orElseThrow(() -> new AppException("Error: Role not found."));
+            roles.add(userRole);
+        } else {
+            strRoles.forEach(role -> {
+                switch (role) {
+                    case "ADMIN":
+                        Role adminRole = roleRepository.findByName(Roles.ADMIN)
+                                .orElseThrow(() -> new AppException("Error: Role is not found."));
+                        roles.add(adminRole);
+                        break;
 
-        user.setRoles(Collections.singleton(userRole));
+                    default:
+                        Role userRole = roleRepository.findByName(Roles.USER)
+                                .orElseThrow(() -> new AppException("Error: Role is not found."));
+                        roles.add(userRole);
+                }
+            });
+        }
+
+        user.setRoles(roles);
+
+//        Role userRole = roleRepository.findByName(Roles.USER)
+//                .orElseThrow(() -> new AppException("User Role not set."));
+//
+//        user.setRoles(Collections.singleton(userRole));
 
         User result = userRepository.save(user);
 
