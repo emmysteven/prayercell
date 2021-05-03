@@ -19,6 +19,7 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
     implementation 'org.junit.jupiter:junit-jupiter:5.7.1'
     implementation 'javax.validation:validation-api:2.0.1.Final'
+    implementation 'org.mapstruct:mapstruct:1.4.2.Final'
     runtimeOnly 'com.h2database:h2'
     runtimeOnly 'org.postgresql:postgresql'
     compileOnly 'org.projectlombok:lombok'
