@@ -1,7 +1,11 @@
 package cells.payload.request;
 
+import cells.model.common.Roles;
 import lombok.Data;
 
+import javax.persistence.Column;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -22,7 +26,9 @@ public class SignupRequest {
     @Size(max = 40)
     private String email;
 
-    private Set<String> role;
+    @Enumerated(EnumType.STRING)
+    @Column(length = 20, nullable = false)
+    private Roles role;
 
     @NotBlank
     @Size(min = 6, max = 20)
