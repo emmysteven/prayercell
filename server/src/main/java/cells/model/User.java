@@ -1,6 +1,7 @@
 package cells.model;
 
 import cells.model.common.BaseModel;
+import cells.model.common.Roles;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -8,43 +9,37 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.util.HashSet;
-import java.util.Set;
 
 
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "Users")
+@Table(name = "users")
 public class User extends BaseModel {
-    @NotBlank
-    @Size(min = 3, max = 20)
+
+    @Column(unique = true, nullable = false, length = 40)
     private String name;
 
-    @NotBlank
-    @Size(max = 15)
+    @Column(unique = true, nullable = false, length = 40)
     private String username;
 
     @Email
-    @NotBlank
-    @Size(max = 50)
-    @Column(unique = true)
+    @Column(unique = true, nullable = false, length = 50)
     private String email;
 
-    @NotBlank
+    @Enumerated(EnumType.STRING)
+    @Column(length = 20, nullable = false)
+    private Roles role;
+
     @Size(min = 8, max = 120)
+    @Column(nullable = false)
     private String password;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles = new HashSet<>();
-
-    public User(String name, String username, String email, String password) {
+    public User(String name, String username, String email, Roles role, String password) {
         this.name = name;
         this.username = username;
         this.email = email;
+        this.role = role;
         this.password = password;
     }
 }
