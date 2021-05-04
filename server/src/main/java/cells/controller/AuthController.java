@@ -1,14 +1,10 @@
 package cells.controller;
 
-import cells.exception.AppException;
-import cells.model.Role;
 import cells.model.User;
-import cells.model.common.Roles;
 import cells.payload.request.LoginRequest;
 import cells.payload.request.SignupRequest;
 import cells.payload.response.ApiResponse;
 import cells.payload.response.JwtAuthResponse;
-import cells.repository.RoleRepository;
 import cells.repository.UserRepository;
 import cells.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +23,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
-import java.util.HashSet;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/auth")
@@ -40,9 +34,6 @@ public class AuthController {
 
     @Autowired
     UserRepository userRepository;
-
-    @Autowired
-    RoleRepository roleRepository;
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -83,39 +74,9 @@ public class AuthController {
                 signUpRequest.getName(),
                 signUpRequest.getUsername(),
                 signUpRequest.getEmail(),
+                signUpRequest.getRole(),
                 passwordEncoder.encode(signUpRequest.getPassword())
         );
-
-        Set<String> strRoles = signUpRequest.getRole();
-        Set<Role> roles = new HashSet<>();
-
-        if (strRoles == null) {
-            Role userRole = roleRepository.findByName(Roles.USER)
-                    .orElseThrow(() -> new AppException("Error: Role not found."));
-            roles.add(userRole);
-        } else {
-            strRoles.forEach(role -> {
-                switch (role) {
-                    case "ADMIN":
-                        Role adminRole = roleRepository.findByName(Roles.ADMIN)
-                                .orElseThrow(() -> new AppException("Error: Role is not found."));
-                        roles.add(adminRole);
-                        break;
-
-                    default:
-                        Role userRole = roleRepository.findByName(Roles.USER)
-                                .orElseThrow(() -> new AppException("Error: Role is not found."));
-                        roles.add(userRole);
-                }
-            });
-        }
-
-        user.setRoles(roles);
-
-//        Role userRole = roleRepository.findByName(Roles.USER)
-//                .orElseThrow(() -> new AppException("User Role not set."));
-//
-//        user.setRoles(Collections.singleton(userRole));
 
         User result = userRepository.save(user);
 
