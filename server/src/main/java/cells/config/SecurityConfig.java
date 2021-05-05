@@ -26,8 +26,18 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(
-//        securedEnabled = true,
-//        jsr250Enabled = true,
+        // It enables the @Secured annotation using which you can protect your controller/service eg:
+        // @Secured({"ROLE_USER", "ROLE_ADMIN"})
+        // public User getUser(Long id) {}
+        securedEnabled = true,
+        // It enables the @RolesAllowed annotation that can be used like this:
+        // @RolesAllowed("ROLE_ADMIN")
+        // public Poll createPoll() {}
+        jsr250Enabled = true,
+        // It enables more complex expression based access control syntax with
+        // @PreAuthorize and @PostAuthorize annotations -
+        // @PreAuthorize("hasRole('USER')")
+        // public Poll createPoll() {}
         prePostEnabled = true
 )
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -43,11 +53,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new JwtAuthFilter();
     }
 
-    @Override
-    public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-        authenticationManagerBuilder
-                .userDetailsService(customUserDetailsService)
-                .passwordEncoder(passwordEncoder());
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
     @Bean(BeanIds.AUTHENTICATION_MANAGER)
@@ -56,21 +64,31 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+    @Override
+    public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
+        authenticationManagerBuilder
+                .userDetailsService(customUserDetailsService)
+                .passwordEncoder(passwordEncoder());
     }
 
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.cors().and().csrf().disable()
-                .exceptionHandling().authenticationEntryPoint(jwtAuthEntryPoint).and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .authorizeRequests().antMatchers("/auth/**").permitAll()
-                .anyRequest().authenticated();
+    protected void configure(HttpSecurity httpSecurity) throws Exception {
 
-        // Add our custom JWT security filter
-        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+        // We don't need CSRF for this example
+        httpSecurity.cors().and().csrf().disable()
+                // dont authenticate this particular request
+                .authorizeRequests().antMatchers("/auth/**").permitAll()
+                // all other requests need to be authenticated
+                .anyRequest().authenticated()
+                // make sure we use stateless session; session won't be used to
+                // store user's state.
+                .and().exceptionHandling()
+                .authenticationEntryPoint(jwtAuthEntryPoint)
+                .and().sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+        // Add custom JWT security filter to validate the tokens with every request
+        httpSecurity.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
     }
 }
