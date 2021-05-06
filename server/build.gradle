@@ -22,7 +22,6 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt-impl:0.11.2'
     implementation 'io.jsonwebtoken:jjwt-jackson:0.11.2'
     implementation 'org.junit.jupiter:junit-jupiter:5.7.1'
-//    implementation 'javax.validation:validation-api:2.0.1.Final'
     implementation 'org.mapstruct:mapstruct:1.4.2.Final'
     implementation 'io.springfox:springfox-swagger2:3.0.0'
     implementation 'io.springfox:springfox-swagger-ui:3.0.0'
