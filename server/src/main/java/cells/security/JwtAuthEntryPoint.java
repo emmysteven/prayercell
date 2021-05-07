@@ -1,8 +1,7 @@
 package cells.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -16,12 +15,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by emmysteven.
+ * The Class JwtAuthEntryPoint will catch authentication error.
+ * @Author Emmy Steven
+ * @Since May 7, 2021
  */
+
+@Slf4j
 @Component
 public class JwtAuthEntryPoint implements AuthenticationEntryPoint {
 
-    private static final Logger logger = LoggerFactory.getLogger(JwtAuthEntryPoint.class);
     @Override
     public void commence(
             HttpServletRequest request,
@@ -29,7 +31,7 @@ public class JwtAuthEntryPoint implements AuthenticationEntryPoint {
             AuthenticationException authException
     ) throws IOException, ServletException {
 
-        logger.error("Unauthorized error: {}", authException.getMessage());
+        log.error("Unauthorized error: {}", authException.getMessage());
 
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

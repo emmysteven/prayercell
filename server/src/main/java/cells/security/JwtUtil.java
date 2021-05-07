@@ -2,8 +2,7 @@ package cells.security;
 
 import cells.config.JwtConfig;
 import io.jsonwebtoken.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
@@ -16,11 +15,11 @@ import java.util.Date;
  * @Author Emmy Steven
  */
 
+@Slf4j
 @Component
 public class JwtUtil {
 
     private SecretKeySpec secretKey;
-    private static final Logger logger = LoggerFactory.getLogger(JwtUtil.class);
 
     @Autowired
     private JwtConfig jwtConfig;
@@ -67,15 +66,15 @@ public class JwtUtil {
                     .parseClaimsJws(token);
             return true;
         } catch (SecurityException ex) {
-            logger.error("Invalid JWT signature");
+            log.error("Invalid JWT signature");
         } catch (MalformedJwtException ex) {
-            logger.error("Invalid JWT token");
+            log.error("Invalid JWT token");
         } catch (ExpiredJwtException ex) {
-            logger.error("Expired JWT token");
+            log.error("Expired JWT token");
         } catch (UnsupportedJwtException ex) {
-            logger.error("Unsupported JWT token");
+            log.error("Unsupported JWT token");
         } catch (IllegalArgumentException ex) {
-            logger.error("JWT claims string is empty.");
+            log.error("JWT claims string is empty.");
         }
         return false;
     }
