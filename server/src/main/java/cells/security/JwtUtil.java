@@ -1,41 +1,42 @@
 package cells.security;
 
+import cells.config.JwtConfig;
 import io.jsonwebtoken.*;
-import io.jsonwebtoken.security.Keys;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
-import java.security.Key;
+import javax.annotation.PostConstruct;
+import javax.crypto.spec.SecretKeySpec;
 import java.util.Date;
 
-/** Utility Function for JWT
+/** This class provides methods for generating, parsing, validating JWT
  * @Author Emmy Steven
  */
 
 @Component
 public class JwtUtil {
 
+    private SecretKeySpec secretKey;
     private static final Logger logger = LoggerFactory.getLogger(JwtUtil.class);
 
-    @Value("${app.jwt.secret}")
-    private String JWT_SECRET;
+    @Autowired
+    private JwtConfig jwtConfig;
 
-    @Value("${app.jwt.expiration}")
-    private int jwtExpiration;
-
-    byte[] secretBytes = JWT_SECRET.getBytes();
-    Key secretKey = Keys.hmacShaKeyFor(secretBytes);
-
+    @PostConstruct
+    protected void init() {
+        byte[] keyBytes = jwtConfig.getSecret().getBytes();
+        secretKey = new SecretKeySpec(keyBytes, "HmacSHA512");
+    }
 
     public String generateToken(Authentication authentication) {
 
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
 
         Date now = new Date();
-        Date expiryDate = new Date(now.getTime() + jwtExpiration);
+        Date expiryDate = new Date(now.getTime() + jwtConfig.getExpiration());
 
         return Jwts.builder()
                 .claim("name", userPrincipal.getName())
@@ -51,19 +52,17 @@ public class JwtUtil {
     public Long getUserIdFromJWT(String token) {
 
         Jws<Claims> jwsClaims = Jwts.parserBuilder()
-                .setSigningKey(secretBytes)
+                .setSigningKey(secretKey)
                 .build()
                 .parseClaimsJws(token);
 
-        // Long userId = jwsClaims.getBody().get("id", Long.class);
-        Long userId = Long.valueOf(jwsClaims.getBody().getSubject());
-        return userId;
+        return Long.valueOf(jwsClaims.getBody().getSubject());
     }
 
     public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder()
-                    .setSigningKey(secretBytes)
+                    .setSigningKey(secretKey)
                     .build()
                     .parseClaimsJws(token);
             return true;
