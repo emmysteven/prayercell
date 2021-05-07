@@ -6,7 +6,7 @@ import cells.payload.request.SignupRequest;
 import cells.payload.response.ApiResponse;
 import cells.payload.response.JwtAuthResponse;
 import cells.repository.UserRepository;
-import cells.security.JwtTokenProvider;
+import cells.security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,7 +39,7 @@ public class AuthController {
     PasswordEncoder passwordEncoder;
 
     @Autowired
-    JwtTokenProvider jwtTokenProvider;
+    JwtUtil jwtUtil;
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -53,7 +53,7 @@ public class AuthController {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        String jwt = jwtTokenProvider.generateToken(authentication);
+        String jwt = jwtUtil.generateToken(authentication);
         return ResponseEntity.ok(new JwtAuthResponse(jwt));
     }
 

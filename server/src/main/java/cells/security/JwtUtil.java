@@ -11,13 +11,14 @@ import org.springframework.stereotype.Component;
 import java.security.Key;
 import java.util.Date;
 
-/**
- * Created by emmysteven.
+/** Utility Function for JWT
+ * @Author Emmy Steven
  */
-@Component
-public class JwtTokenProvider {
 
-    private static final Logger logger = LoggerFactory.getLogger(JwtTokenProvider.class);
+@Component
+public class JwtUtil {
+
+    private static final Logger logger = LoggerFactory.getLogger(JwtUtil.class);
 
     @Value("${app.jwt.secret}")
     private String JWT_SECRET;
