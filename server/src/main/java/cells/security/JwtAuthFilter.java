@@ -19,10 +19,11 @@ import java.io.IOException;
 /**
  * Created by emmysteven.
  */
+
 public class JwtAuthFilter extends OncePerRequestFilter {
 
     @Autowired
-    private JwtTokenProvider tokenProvider;
+    private JwtUtil jwtUtil;
 
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
@@ -38,8 +39,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         try {
             String jwt = getJwtFromRequest(request);
 
-            if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
-                Long userId = tokenProvider.getUserIdFromJWT(jwt);
+            if (StringUtils.hasText(jwt) && jwtUtil.validateToken(jwt)) {
+                Long userId = jwtUtil.getUserIdFromJWT(jwt);
 
                 /*
                     Note that you could also encode the user's username and roles inside JWT claims
