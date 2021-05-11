@@ -3,6 +3,7 @@ package cells.model;
 import cells.model.common.BaseModel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.redis.core.RedisHash;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -13,9 +14,10 @@ import java.time.LocalDate;
 import java.time.Period;
 
 @Data
-@NoArgsConstructor
-@Entity
 @Table
+@Entity
+@RedisHash(value = "memberRedis")
+@NoArgsConstructor
 public class Member extends BaseModel {
     @NotBlank
     @Size(min = 3, max = 20)
