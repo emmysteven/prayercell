@@ -27,7 +27,7 @@ public class MemberService {
     }
 
     @Cacheable(cacheNames = "members")
-    public List<Member> getAll(Member member){
+    public List<Member> getAll(){
         return repository.findAll();
     }
 

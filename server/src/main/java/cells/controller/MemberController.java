@@ -20,9 +20,9 @@ public class MemberController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Member>> getAll(Member member){
+    public ResponseEntity<List<Member>> getAll(){
         // added Member member so that caching will be possible
-        List<Member> members = memberService.getAll(member);
+        List<Member> members = memberService.getAll();
         return new ResponseEntity<>(members, HttpStatus.OK);
     }
 
