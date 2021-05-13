@@ -20,32 +20,33 @@ public class MemberController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Member>> getAllMembers(){
-        List<Member> members = memberService.getAllMembers();
+    public ResponseEntity<List<Member>> getAll(Member member){
+        // added Member member so that caching will be possible
+        List<Member> members = memberService.getAll(member);
         return new ResponseEntity<>(members, HttpStatus.OK);
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Member> getMemberById(@PathVariable("id") Long id){
-        Member member = memberService.getMemberById(id);
+    public ResponseEntity<Member> getById(@PathVariable("id") Long id){
+        Member member = memberService.getById(id);
         return new ResponseEntity<>(member, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<Member> addMember(@RequestBody Member member){
-        Member newMember = memberService.addMember(member);
+    public ResponseEntity<Member> add(@RequestBody Member member){
+        Member newMember = memberService.add(member);
         return new ResponseEntity<>(newMember, HttpStatus.CREATED);
     }
 
     @PutMapping
-    public ResponseEntity<Member> updateMember(@RequestBody Member member){
-        Member updateMember = memberService.updateMember(member);
+    public ResponseEntity<Member> update(@RequestBody Member member){
+        Member updateMember = memberService.update(member);
         return new ResponseEntity<>(updateMember, HttpStatus.OK);
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<?> deleteMember(@PathVariable("id") Long id){
-        memberService.deleteMember(id);
+    public ResponseEntity<?> delete(@PathVariable("id") Long id){
+        memberService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
