@@ -14,14 +14,12 @@ import java.util.List;
 public class MemberController {
     private final MemberService memberService;
 
-    @Autowired
     public MemberController(MemberService memberService) {
         this.memberService = memberService;
     }
 
     @GetMapping
     public ResponseEntity<List<Member>> getAll(){
-        // added Member member so that caching will be possible
         List<Member> members = memberService.getAll();
         return new ResponseEntity<>(members, HttpStatus.OK);
     }
