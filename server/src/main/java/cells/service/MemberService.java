@@ -5,6 +5,7 @@ import cells.model.Member;
 import cells.repository.MemberRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -49,6 +50,7 @@ public class MemberService {
         repository.deleteById(id);
     }
 
+    @CachePut(cacheNames = "members", key="#member.id")
     public Member update(Member member) {
         return repository.save(member);
     }
