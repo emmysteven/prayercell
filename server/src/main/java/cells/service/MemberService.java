@@ -4,6 +4,7 @@ import cells.exception.ResourceNotFoundException;
 import cells.model.Member;
 import cells.repository.MemberRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -39,6 +40,7 @@ public class MemberService {
         return repository.save(member);
     }
 
+    @CacheEvict(cacheNames = "members", key = "#id")
     public void delete(Long id) {
         boolean exist = repository.existsById(id);
         if (!exist) {
