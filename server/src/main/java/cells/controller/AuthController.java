@@ -7,7 +7,6 @@ import cells.payload.response.ApiResponse;
 import cells.payload.response.JwtAuthResponse;
 import cells.repository.UserRepository;
 import cells.security.JwtUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -29,17 +28,22 @@ import java.net.URI;
 //@CrossOrigin(origins = "http://localhost:4200")
 public class AuthController {
 
-    @Autowired
-    AuthenticationManager authenticationManager;
+    final JwtUtil jwtUtil;
+    final UserRepository userRepository;
+    final PasswordEncoder passwordEncoder;
+    final AuthenticationManager authenticationManager;
 
-    @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    PasswordEncoder passwordEncoder;
-
-    @Autowired
-    JwtUtil jwtUtil;
+    public AuthController(
+            JwtUtil jwtUtil,
+            UserRepository userRepository,
+            PasswordEncoder passwordEncoder,
+            AuthenticationManager authenticationManager
+    ) {
+        this.jwtUtil = jwtUtil;
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.authenticationManager = authenticationManager;
+    }
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
