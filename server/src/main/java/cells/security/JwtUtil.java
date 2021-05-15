@@ -3,7 +3,6 @@ package cells.security;
 import cells.config.JwtConfig;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
@@ -20,9 +19,11 @@ import java.util.Date;
 public class JwtUtil {
 
     private SecretKeySpec secretKey;
+    private final JwtConfig jwtConfig;
 
-    @Autowired
-    private JwtConfig jwtConfig;
+    public JwtUtil(JwtConfig jwtConfig) {
+        this.jwtConfig = jwtConfig;
+    }
 
     @PostConstruct
     protected void init() {
