@@ -32,10 +32,18 @@ public class JwtAuthResponse {
      private String role;
      private String type = "Bearer";
      private String token;
+     private String refreshToken;
 
 
-     public JwtAuthResponse(String token, Long id, String email, String role) {
+     public JwtAuthResponse(
+     String token,
+     String refreshToken,
+     Long id,
+     String email,
+     String role
+     ) {
          this.token = token;
+         this.refreshToken = refreshToken;
          this.id = id;
          this.email = email;
          this.role = role;
