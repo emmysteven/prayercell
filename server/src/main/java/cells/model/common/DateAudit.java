@@ -18,7 +18,7 @@ import java.time.Instant;
         value = {"createdAt", "updatedAt"},
         allowGetters = true
 )
-public abstract class Auditable extends BaseModel {
+public abstract class DateAudit extends BaseModel {
 
     @CreatedDate
     @Column(updatable = false, nullable = false)
