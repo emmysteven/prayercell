@@ -1,6 +1,5 @@
-package cells.security;
+package cells.model;
 
-import cells.model.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -12,7 +11,8 @@ import java.util.Objects;
 
 public class UserPrincipal implements UserDetails {
     private Long id;
-    private String name;
+    private String firstName;
+    private String lastName;
     private String username;
 
 //    @JsonIgnore
@@ -25,14 +25,16 @@ public class UserPrincipal implements UserDetails {
 
     public UserPrincipal(
             Long id,
-            String name,
+            String firstName,
+            String lastName,
             String username,
             String email,
             String password,
             Collection<? extends GrantedAuthority> authorities
     ) {
         this.id = id;
-        this.name = name;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.username = username;
         this.email = email;
         this.password = password;
@@ -40,10 +42,12 @@ public class UserPrincipal implements UserDetails {
     }
 
     public static UserPrincipal create(User user) {
+        // TODO: Fix error on user.getRole().name()
         List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(user.getRole().name()));
         return new UserPrincipal(
                 user.getId(),
-                user.getName(),
+                user.getFirstName(),
+                user.getLastName(),
                 user.getUsername(),
                 user.getEmail(),
                 user.getPassword(),
@@ -52,7 +56,8 @@ public class UserPrincipal implements UserDetails {
     }
 
     public Long getId() { return id; }
-    public String getName() { return name; }
+    public String getFirstName() { return firstName; }
+    public String getLastName() { return lastName; }
     public String getEmail() { return email; }
 
     @Override
