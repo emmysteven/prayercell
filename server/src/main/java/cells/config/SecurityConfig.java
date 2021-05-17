@@ -3,7 +3,6 @@ package cells.config;
 import cells.security.CustomUserDetailsService;
 import cells.security.JwtAuthEntryPoint;
 import cells.security.JwtAuthFilter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -42,11 +41,17 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 )
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    CustomUserDetailsService customUserDetailsService;
+    private final CustomUserDetailsService customUserDetailsService;
 
-    @Autowired
-    private JwtAuthEntryPoint jwtAuthEntryPoint;
+    private final JwtAuthEntryPoint jwtAuthEntryPoint;
+
+    public SecurityConfig(
+            CustomUserDetailsService customUserDetailsService,
+            JwtAuthEntryPoint jwtAuthEntryPoint
+    ) {
+        this.customUserDetailsService = customUserDetailsService;
+        this.jwtAuthEntryPoint = jwtAuthEntryPoint;
+    }
 
     @Bean
     public JwtAuthFilter jwtAuthenticationFilter() {
