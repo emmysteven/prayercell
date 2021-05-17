@@ -1,43 +1,32 @@
 package cells.model.common;
 
-import org.springframework.data.annotation.CreatedBy;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import lombok.Data;
+import javax.persistence.Column;
+import javax.persistence.EntityListeners;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Version;
+import java.io.Serializable;
+import java.time.Instant;
 
-import javax.persistence.*;
-import java.util.Date;
-
-import static javax.persistence.TemporalType.TIMESTAMP;
-
+@Data
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-@Data
-public abstract class Auditable<U> {
-
-    @CreatedBy
-    @Column(name = "CREATED_BY", updatable = false, nullable = false)
-    private String createdBy;
-
-    @LastModifiedBy
-    @Column(name = "EDITED_BY", nullable = false)
-    private String editedBy;
+@JsonIgnoreProperties(
+        value = {"createdAt", "updatedAt"},
+        allowGetters = true
+)
+public abstract class Auditable extends BaseModel {
 
     @CreatedDate
-    @Temporal(TIMESTAMP)
-    @Column(name = "CREATED_ON", updatable = false, nullable = false)
-    private Date createdOn;
+    @Column(updatable = false, nullable = false)
+    private Instant createdAt;
 
     @LastModifiedDate
-    @Temporal(TIMESTAMP)
-    @Column(name = "EDITED_ON", nullable = false)
-    private Date editedOn;
-
-    @Version
-    @Column(name = "VERSION", nullable = false)
-    private Long version;
-
+    @Column(nullable = false)
+    private Instant updatedAt;
 }
