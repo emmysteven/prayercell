@@ -26,13 +26,13 @@ public abstract class EntityAudit extends BaseModel {
     @Column(updatable = false, nullable = false)
     private Instant createdBy;
 
-    @LastModifiedBy
-    @Column(nullable = false)
-    private Instant editedBy;
-
     @CreatedDate
     @Column(updatable = false, nullable = false)
     private Instant createdAt;
+
+    @LastModifiedBy
+    @Column(nullable = false)
+    private Instant editedBy;
 
     @LastModifiedDate
     @Column(nullable = false)
