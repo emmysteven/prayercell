@@ -1,6 +1,6 @@
 package cells.model.common;
 
-public enum Roles {
+public enum RoleName {
     USER,
     ADMIN
 }
