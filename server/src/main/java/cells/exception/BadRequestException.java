@@ -3,8 +3,7 @@ package cells.exception;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-
-@ResponseStatus(HttpStatus.BAD_REQUEST)
+@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 public class BadRequestException extends RuntimeException {
 
     public BadRequestException(String message) {
