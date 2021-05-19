@@ -1,6 +1,6 @@
 package cells.domain.enums;
 
-public enum RoleName {
+public enum Roles {
     USER,
     ADMIN
 }
