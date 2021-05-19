@@ -1,4 +1,4 @@
-package cells.security;
+package cells.infrastructure.security;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import java.lang.annotation.*;

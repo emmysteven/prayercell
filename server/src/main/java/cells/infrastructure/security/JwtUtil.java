@@ -1,7 +1,7 @@
-package cells.security;
+package cells.infrastructure.security;
 
-import cells.config.JwtConfig;
-import cells.entities.CustomUserDetails;
+import cells.application.config.JwtConfig;
+import cells.domain.entity.CustomUserDetails;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

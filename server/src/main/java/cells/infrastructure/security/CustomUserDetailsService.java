@@ -1,9 +1,9 @@
-package cells.security;
+package cells.infrastructure.security;
 
-import cells.exception.ResourceNotFoundException;
-import cells.entities.CustomUserDetails;
-import cells.entities.User;
-import cells.repository.UserRepository;
+import cells.application.exception.ResourceNotFoundException;
+import cells.domain.entity.CustomUserDetails;
+import cells.domain.entity.User;
+import cells.infrastructure.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
