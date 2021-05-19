@@ -1,6 +1,6 @@
-package cells.payload.request;
+package cells.application.payload.request;
 
-import cells.domain.enums.RoleName;
+import cells.domain.enums.Roles;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -29,7 +29,7 @@ public class SignupRequest {
 
     @Enumerated(EnumType.STRING)
     @Column(length = 20, nullable = false)
-    private RoleName role;
+    private Roles role;
 
     @NotBlank
     @Size(min = 6, max = 20)

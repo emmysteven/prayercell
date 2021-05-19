@@ -1,4 +1,4 @@
-package cells.util;
+package cells.application.util;
 
 import java.util.UUID;
 

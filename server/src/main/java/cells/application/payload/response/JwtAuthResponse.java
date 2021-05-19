@@ -1,4 +1,4 @@
-package cells.payload.response;
+package cells.application.payload.response;
 
 public class JwtAuthResponse {
     private String accessToken;
