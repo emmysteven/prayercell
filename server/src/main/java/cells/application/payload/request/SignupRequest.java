@@ -1,47 +1,38 @@
 package cells.application.payload.request;
 
-import cells.domain.enums.Roles;
+import cells.application.validation.annotation.NullOrNotBlank;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
+import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 @Data
-public class SignupRequest {
-    @NotBlank
-    @Size(min = 4, max = 40)
-    private String name;
+@ApiModel(value = "Registration Request", description = "The registration request payload")
+public class RegistrationRequest {
 
-    @NotBlank
-    @Size(min = 3, max = 15)
+    @NullOrNotBlank(message = "Registration username can be null but not blank")
+    @ApiModelProperty(value = "A valid username", allowableValues = "NonEmpty String")
     private String username;
 
-    @Email
-    @NotBlank
-    @Size(max = 40)
+    @NullOrNotBlank(message = "Registration email can be null but not blank")
+    @ApiModelProperty(value = "A valid email", required = true, allowableValues = "NonEmpty String")
     private String email;
 
-    @Enumerated(EnumType.STRING)
-    @Column(length = 20, nullable = false)
-    private Roles role;
-
-    @NotBlank
-    @Size(min = 6, max = 20)
+    @NotNull(message = "Registration password cannot be null")
+    @ApiModelProperty(value = "A valid password string", required = true, allowableValues = "NonEmpty String")
     private String password;
 
     @NotNull(message = "Specify whether the user has to be registered as an admin or not")
-    @ApiModelProperty(
-            required = true,
-            dataType = "boolean",
-            allowableValues = "true, false",
-            value = "Flag denoting whether the user is an admin or not"
-    )
+    @ApiModelProperty(value = "Flag denoting whether the user is an admin or not", required = true,
+            dataType = "boolean", allowableValues = "true, false")
     private Boolean registerAsAdmin;
-}
 
+    public RegistrationRequest(String username, String email,
+                               String password, Boolean registerAsAdmin) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.registerAsAdmin = registerAsAdmin;
+    }
+}

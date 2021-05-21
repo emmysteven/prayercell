@@ -4,6 +4,7 @@ import cells.application.exception.ResourceNotFoundException;
 import cells.domain.entity.CustomUserDetails;
 import cells.domain.entity.User;
 import cells.infrastructure.repository.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -16,6 +17,7 @@ import java.util.Optional;
  * Created by emmysteven on 02/08/17.
  */
 
+@Slf4j
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
@@ -30,6 +32,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Transactional
     public UserDetails loadUserByUsername(String usernameOrEmail) throws UsernameNotFoundException {
         Optional<User> dbUser = repository.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail);
+        log.info("Fetched user : " + dbUser + " by " + usernameOrEmail);
         return dbUser.map(CustomUserDetails::new)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with username or email : " + usernameOrEmail));
     }
@@ -38,6 +41,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Transactional
     public UserDetails loadUserById(Long id) {
         Optional<User> dbUser = repository.findById(id);
+        log.info("Fetched user : " + dbUser + " by " + id);
         return dbUser.map(CustomUserDetails::new)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", id));
     }
