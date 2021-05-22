@@ -28,7 +28,7 @@ import java.util.Optional;
 
 @Slf4j
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 @Api(value = "Authorization Rest API", description = "Defines endpoints that can be hit only when the user is not logged in. It's not secured by default.")
 public class AuthController {
     private final JwtUtil jwtUtil;
