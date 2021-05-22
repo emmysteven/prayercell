@@ -1,7 +1,7 @@
-package cells.controller;
+package cells.web.controller;
 
-import cells.entities.Member;
-import cells.infrastructure.services.MemberService;
+import cells.domain.entity.Member;
+import cells.infrastructure.service.MemberService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
