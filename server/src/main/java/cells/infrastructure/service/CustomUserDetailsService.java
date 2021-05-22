@@ -1,4 +1,4 @@
-package cells.infrastructure.security;
+package cells.infrastructure.service;
 
 import cells.application.exception.ResourceNotFoundException;
 import cells.domain.entity.CustomUserDetails;
