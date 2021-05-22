@@ -7,7 +7,6 @@ import cells.domain.entity.token.EmailVerificationToken;
 import cells.domain.enums.TokenStatus;
 import cells.infrastructure.repository.EmailVerificationTokenRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -20,10 +19,10 @@ import java.util.UUID;
 public class EmailVerificationTokenService {
 
     private final EmailVerificationTokenRepository repository;
+
     @Value("${app.token.email.verification.duration}")
     private Long emailVerificationTokenExpiryDuration;
 
-    @Autowired
     public EmailVerificationTokenService(EmailVerificationTokenRepository repository) {
         this.repository = repository;
     }
@@ -79,7 +78,11 @@ public class EmailVerificationTokenService {
      */
     public void verifyExpiration(EmailVerificationToken token) {
         if (token.getExpiryDate().compareTo(Instant.now()) < 0) {
-            throw new InvalidTokenRequestException("Email Verification Token", token.getToken(), "Expired token. Please issue a new request");
+            throw new InvalidTokenRequestException(
+                    "Email Verification Token",
+                    token.getToken(),
+                    "Expired token. Please issue a new request"
+            );
         }
     }
 
