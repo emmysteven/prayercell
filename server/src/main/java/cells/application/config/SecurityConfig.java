@@ -1,6 +1,6 @@
 package cells.application.config;
 
-import cells.infrastructure.security.CustomUserDetailsService;
+import cells.infrastructure.service.CustomUserDetailsService;
 import cells.infrastructure.security.JwtAuthEntryPoint;
 import cells.infrastructure.security.JwtAuthFilter;
 import org.springframework.context.annotation.Bean;
