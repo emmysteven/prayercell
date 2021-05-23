@@ -8,8 +8,9 @@ import lombok.*;
 import javax.validation.constraints.NotNull;
 
 @Data
+@NoArgsConstructor
 @ApiModel(value = "Registration Request", description = "The registration request payload")
-public class RegistrationRequest {
+public class SignupRequest {
 
     @NullOrNotBlank(message = "Registration username can be null but not blank")
     @ApiModelProperty(value = "A valid username", allowableValues = "NonEmpty String")
@@ -24,12 +25,16 @@ public class RegistrationRequest {
     private String password;
 
     @NotNull(message = "Specify whether the user has to be registered as an admin or not")
-    @ApiModelProperty(value = "Flag denoting whether the user is an admin or not", required = true,
-            dataType = "boolean", allowableValues = "true, false")
+    @ApiModelProperty(required = true, dataType = "boolean", allowableValues = "true, false",
+            value = "Flag denoting whether the user is an admin or not")
     private Boolean registerAsAdmin;
 
-    public RegistrationRequest(String username, String email,
-                               String password, Boolean registerAsAdmin) {
+    public SignupRequest(
+            String username,
+            String email,
+            String password,
+            Boolean registerAsAdmin
+    ) {
         this.username = username;
         this.email = email;
         this.password = password;
