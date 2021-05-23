@@ -25,28 +25,25 @@ public class User extends DateAudit {
 
     @NaturalId
     @Email
-    @Column(name = "email", unique = true)
+    @Column(unique = true)
     @NotBlank(message = "User email cannot be null")
     private String email;
 
-    @Column(name = "username", unique = true)
+    @Column(unique = true)
     @NullOrNotBlank(message = "Username can not be blank")
     private String username;
 
-    @Column(name = "password")
     @NotNull(message = "Password cannot be null")
     private String password;
 
-    @Column(name = "firstname")
     @NullOrNotBlank(message = "First name can not be blank")
     private String firstName;
 
-    @Column(name = "lastname")
     @NullOrNotBlank(message = "Last name can not be blank")
     private String lastName;
 
-    @Column(name = "is_active", nullable = false)
-    private Boolean active;
+    @Column(nullable = false)
+    private Boolean isActive;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "user_authority", joinColumns = {
@@ -54,7 +51,7 @@ public class User extends DateAudit {
             @JoinColumn(name = "role_id", referencedColumnName = "role_id")})
     private Set<Role> roles = new HashSet<>();
 
-    @Column(name = "is_email_verified", nullable = false)
+    @Column(nullable = false)
     private Boolean isEmailVerified;
 
     public User() {
@@ -68,7 +65,7 @@ public class User extends DateAudit {
         firstName = user.getFirstName();
         lastName = user.getLastName();
         email = user.getEmail();
-        active = user.getActive();
+        isActive = user.getIsActive();
         roles = user.getRoles();
         isEmailVerified = user.getEmailVerified();
     }
