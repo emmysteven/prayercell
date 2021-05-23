@@ -1,5 +1,8 @@
-package com.accolite.pru.health.AuthApp.model.payload;
+package cells.application.payload.response;
 
+import lombok.*;
+
+@Data
 public class ApiResponse {
 
     private String data;
@@ -10,22 +13,6 @@ public class ApiResponse {
 
     public ApiResponse(String data, Boolean success) {
         this.data = data;
-        this.success = success;
-    }
-
-    public String getData() {
-        return data;
-    }
-
-    public void setData(String data) {
-        this.data = data;
-    }
-
-    public Boolean getSuccess() {
-        return success;
-    }
-
-    public void setSuccess(Boolean success) {
         this.success = success;
     }
 }
