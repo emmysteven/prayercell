@@ -1,40 +1,30 @@
 package cells.domain.entity.token;
 
-import cells.domain.entity.UserDevice;
-import cells.domain.entity.audit.DateAudit;
-import lombok.*;
+import cells.domain.entity.common.BaseEntity;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.NaturalId;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
 import java.time.Instant;
 
 @Data
 @NoArgsConstructor
 @Entity
-public class RefreshToken extends DateAudit {
-
-    @Id
-    @Column(name = "token_id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "refresh_token_seq")
-    @SequenceGenerator(name = "refresh_token_seq", allocationSize = 1)
-    private Long id;
+public class RefreshToken extends BaseEntity {
 
     @Column(nullable = false, unique = true)
     @NaturalId(mutable = true)
     private String token;
-
-    @OneToOne(optional = false, cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_device_id", unique = true)
-    private UserDevice userDevice;
 
     private Long refreshCount;
 
     @Column(nullable = false)
     private Instant expiryDate;
 
-    public RefreshToken(String token, UserDevice userDevice, Long refreshCount, Instant expiryDate) {
+    public RefreshToken(String token, Long refreshCount, Instant expiryDate) {
         this.token = token;
-        this.userDevice = userDevice;
         this.refreshCount = refreshCount;
         this.expiryDate = expiryDate;
     }
