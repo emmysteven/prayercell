@@ -1,7 +1,7 @@
 package cells.domain.entity.token;
 
 import cells.domain.entity.User;
-import cells.domain.entity.audit.DateAudit;
+import cells.domain.entity.common.BaseEntity;
 import cells.domain.enums.TokenStatus;
 import lombok.Data;
 
@@ -10,13 +10,7 @@ import java.time.Instant;
 
 @Data
 @Entity(name = "EMAIL_VERIFICATION_TOKEN")
-public class EmailVerificationToken extends DateAudit {
-
-    @Id
-    @Column(name="token_id")
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="email_token_seq")
-    @SequenceGenerator(name="email_token_seq", allocationSize=1)
-    private Long id;
+public class EmailVerificationToken extends BaseEntity {
 
     @Column(nullable = false, unique = true)
     private String token;
