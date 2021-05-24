@@ -1,4 +1,4 @@
-package cells.domain.entity.audit;
+package cells.domain.entity.common;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
@@ -20,11 +20,19 @@ import java.time.Instant;
         value = {"createdAt", "updatedAt"},
         allowGetters = true
 )
-public abstract class DateAudit {
+public abstract class EntityAudit {
+
+    @CreatedBy
+    @Column(updatable = false, nullable = false)
+    private Instant createdBy;
 
     @CreatedDate
     @Column(updatable = false, nullable = false)
     private Instant createdAt;
+
+    @LastModifiedBy
+    @Column(nullable = false)
+    private Instant editedBy;
 
     @LastModifiedDate
     @Column(nullable = false)
