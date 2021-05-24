@@ -9,7 +9,7 @@ import javax.persistence.*;
 import java.time.Instant;
 
 @Data
-@Entity(name = "EMAIL_VERIFICATION_TOKEN")
+@Entity
 public class EmailVerificationToken extends BaseEntity {
 
     @Column(nullable = false, unique = true)
