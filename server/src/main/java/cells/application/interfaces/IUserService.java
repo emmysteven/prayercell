@@ -1,8 +1,8 @@
 package cells.application.interfaces;
 
-import cells.entities.User;
 import cells.application.payload.request.LoginRequest;
 import cells.application.payload.request.SignupRequest;
+import cells.domain.entity.User;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
