@@ -1,6 +1,6 @@
 package cells.domain.entity;
 
-import cells.domain.entity.audit.DateAudit;
+import cells.domain.entity.common.EntityAudit;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,15 +12,12 @@ import java.time.LocalDate;
 import java.time.Period;
 
 @Data
-@Table
 @Entity
 @NoArgsConstructor
-public class Member extends DateAudit {
+public class Member extends EntityAudit {
 
     @Id
-    @Column(name = "member_id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "member_seq")
-    @SequenceGenerator(name = "member_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @NotBlank
