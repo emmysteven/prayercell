@@ -6,26 +6,6 @@
                 text-indent: -1em;
             }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 </style>
 <![endif]--><!-- Progressive Enhancements -->
 <div style="display: none; font-size: 1px; line-height: 1px; max-height: 0; max-width: 0; opacity: 0; overflow: hidden; mso-hide: all; font-family: sans-serif;">
@@ -52,7 +32,7 @@
                                     <tr>
 
                                         <td class="tw-card-header"
-                                            style="padding: 5px 5px px; width: 366px; color: #ffff; text-decoration: none; font-family: sans-serif;"
+                                            style="padding: 5px 5px 0px; width: 366px; color: #ffff; text-decoration: none; font-family: sans-serif;"
                                             align="center"><span
                                                 style="font-weight: 600;">Email Confirmation Required</span></td>
 
