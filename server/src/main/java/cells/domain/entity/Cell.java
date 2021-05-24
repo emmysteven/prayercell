@@ -1,5 +1,6 @@
 package cells.domain.entity;
 
+import cells.domain.entity.common.BaseEntity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,12 +11,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Entity
 
-public class Cell {
-    @Id
-    @Column(name = "cell_id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cell_seq")
-    @SequenceGenerator(name = "cell_seq", allocationSize = 1)
-    private Long id;
+public class Cell extends BaseEntity {
 
     private String name;
     private String address;
@@ -23,8 +19,7 @@ public class Cell {
     private LocalDate time;
 
     // This allows for unit testing
-    public Cell(Long id, String name, String address, String meetingDay, LocalDate time) {
-        this.id = id;
+    public Cell(String name, String address, String meetingDay, LocalDate time) {
         this.name = name;
         this.address = address;
         this.meetingDay = meetingDay;
