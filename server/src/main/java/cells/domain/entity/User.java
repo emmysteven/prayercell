@@ -1,7 +1,7 @@
 package cells.domain.entity;
 
 import cells.application.validation.annotation.NullOrNotBlank;
-import cells.domain.entity.audit.DateAudit;
+import cells.domain.entity.common.BaseEntity;
 import lombok.Data;
 import org.hibernate.annotations.NaturalId;
 
@@ -15,13 +15,7 @@ import java.util.Set;
 
 @Data
 @Entity(name = "users")
-public class User extends DateAudit {
-
-    @Id
-    @Column(name = "user_id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
-    @SequenceGenerator(name = "user_seq", allocationSize = 1)
-    private Long id;
+public class User extends BaseEntity {
 
     @NaturalId
     @Email
@@ -47,8 +41,8 @@ public class User extends DateAudit {
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "user_authority", joinColumns = {
-            @JoinColumn(name = "user_id", referencedColumnName = "user_id")}, inverseJoinColumns = {
-            @JoinColumn(name = "role_id", referencedColumnName = "role_id")})
+            @JoinColumn(name = "user_id", referencedColumnName = "id")}, inverseJoinColumns = {
+            @JoinColumn(name = "role_id", referencedColumnName = "id")})
     private Set<Role> roles = new HashSet<>();
 
     @Column(nullable = false)
@@ -59,7 +53,6 @@ public class User extends DateAudit {
     }
 
     public User(User user) {
-        id = user.getId();
         username = user.getUsername();
         password = user.getPassword();
         firstName = user.getFirstName();

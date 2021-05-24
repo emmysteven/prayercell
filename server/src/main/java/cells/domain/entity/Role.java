@@ -1,5 +1,6 @@
 package cells.domain.entity;
 
+import cells.domain.entity.common.BaseEntity;
 import cells.domain.enums.Roles;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
@@ -14,12 +15,7 @@ import java.util.Set;
  */
 @Data
 @Entity
-public class Role {
-
-    @Id
-    @Column(name = "role_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Role extends BaseEntity {
 
     @Column(name = "role_name")
     @Enumerated(EnumType.STRING)
