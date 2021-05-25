@@ -12,7 +12,15 @@ import javax.validation.constraints.NotNull;
 @ApiModel(value = "Registration Request", description = "The registration request payload")
 public class SignupRequest {
 
-    @NullOrNotBlank(message = "Registration username can be null but not blank")
+    @NullOrNotBlank(message = "firstname can be null but not blank")
+    @ApiModelProperty(value = "A valid first", allowableValues = "NonEmpty String")
+    private String firstname;
+
+    @NullOrNotBlank(message = "Lastname can be null but not blank")
+    @ApiModelProperty(value = "A valid lastname", allowableValues = "NonEmpty String")
+    private String lastname;
+
+    @NullOrNotBlank(message = "username can be null but not blank")
     @ApiModelProperty(value = "A valid username", allowableValues = "NonEmpty String")
     private String username;
 
@@ -30,11 +38,15 @@ public class SignupRequest {
     private Boolean registerAsAdmin;
 
     public SignupRequest(
+            String firstname,
+            String lastname,
             String username,
             String email,
             String password,
             Boolean registerAsAdmin
     ) {
+        this.firstname = firstname;
+        this.lastname = lastname;
         this.username = username;
         this.email = email;
         this.password = password;
