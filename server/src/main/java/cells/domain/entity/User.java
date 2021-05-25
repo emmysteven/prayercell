@@ -31,10 +31,10 @@ public class User extends BaseEntity {
     private String password;
 
     @NullOrNotBlank(message = "First name can not be blank")
-    private String firstName;
+    private String firstname;
 
     @NullOrNotBlank(message = "Last name can not be blank")
-    private String lastName;
+    private String lastname;
 
     @Column(nullable = false)
     private Boolean isActive;
@@ -53,11 +53,12 @@ public class User extends BaseEntity {
     }
 
     public User(User user) {
+        id = user.getId();
+        firstname = user.getFirstname();
+        lastname = user.getLastname();
         username = user.getUsername();
-        password = user.getPassword();
-        firstName = user.getFirstName();
-        lastName = user.getLastName();
         email = user.getEmail();
+        password = user.getPassword();
         isActive = user.getIsActive();
         roles = user.getRoles();
         isEmailVerified = user.getEmailVerified();
