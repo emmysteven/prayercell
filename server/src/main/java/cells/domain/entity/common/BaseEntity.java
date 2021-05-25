@@ -1,6 +1,6 @@
 package cells.domain.entity.common;
 
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -13,5 +13,5 @@ public class BaseEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(updatable = false, nullable = false)
-    private Long id;
+    protected Long id;
 }
