@@ -28,7 +28,7 @@ public class CustomUserDetails extends User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return super.getEmail();
+        return super.getUsername();
     }
 
     @Override
@@ -38,7 +38,7 @@ public class CustomUserDetails extends User implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return super.getActive();
+        return super.getIsActive();
     }
 
     @Override
