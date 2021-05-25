@@ -20,21 +20,21 @@ import java.time.Instant;
         value = {"createdAt", "updatedAt"},
         allowGetters = true
 )
-public abstract class EntityAudit {
+public abstract class EntityAudit<U> {
 
     @CreatedBy
     @Column(updatable = false, nullable = false)
-    private Instant createdBy;
+    protected U createdBy;
 
     @CreatedDate
     @Column(updatable = false, nullable = false)
-    private Instant createdAt;
+    protected Instant createdAt;
 
     @LastModifiedBy
     @Column(nullable = false)
-    private Instant editedBy;
+    protected U editedBy;
 
     @LastModifiedDate
     @Column(nullable = false)
-    private Instant updatedAt;
+    protected Instant updatedAt;
 }
