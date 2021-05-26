@@ -1,9 +1,9 @@
-package cells.infrastructure.services;
+package cells.infrastructure.service;
 
 import cells.application.exception.TokenRefreshException;
-import cells.entities.token.RefreshToken;
-import cells.persistence.repository.RefreshTokenRepository;
 import cells.application.util.Util;
+import cells.domain.entity.token.RefreshToken;
+import cells.infrastructure.repository.RefreshTokenRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
