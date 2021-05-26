@@ -1,4 +1,4 @@
-package cells.infrastructure.services;
+package cells.infrastructure.service;
 
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
