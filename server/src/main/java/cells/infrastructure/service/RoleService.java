@@ -1,7 +1,7 @@
-package cells.infrastructure.services;
+package cells.infrastructure.service;
 
-import cells.entities.Role;
-import cells.persistence.repository.RoleRepository;
+import cells.domain.entity.Role;
+import cells.infrastructure.repository.RoleRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -16,6 +16,6 @@ public class RoleService {
     }
 
     public Collection<Role> findAll() {
-        return roleRepository.findAll();
+        return (Collection<Role>) roleRepository.findAll();
     }
 }
