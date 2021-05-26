@@ -1,8 +1,8 @@
-package cells.infrastructure.services;
+package cells.infrastructure.service;
 
 import cells.application.exception.ResourceNotFoundException;
-import cells.entities.Member;
-import cells.persistence.repository.MemberRepository;
+import cells.domain.entity.Member;
+import cells.infrastructure.repository.MemberRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
