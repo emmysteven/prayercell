@@ -153,7 +153,8 @@ public class AuthController {
                 })
                 .orElseThrow(() -> new PasswordResetLinkException(
                         passwordResetLinkRequest.getEmail(),
-                        "Couldn't create a valid token"));
+                        "Couldn't create a valid token")
+                );
     }
 
     /**
@@ -175,7 +176,10 @@ public class AuthController {
                     applicationEventPublisher.publishEvent(onPasswordChangeEvent);
                     return ResponseEntity.ok(new ApiResponse("Password changed successfully", true));
                 })
-                .orElseThrow(() -> new PasswordResetException(passwordResetRequest.getToken(), "Error in resetting password"));
+                .orElseThrow(() -> new PasswordResetException(
+                        passwordResetRequest.getToken(),
+                        "Error in resetting password")
+                );
     }
 
     /**
@@ -221,12 +225,23 @@ public class AuthController {
 
         return Optional.ofNullable(newEmailToken.getUser())
                 .map(registeredUser -> {
-                    UriComponentsBuilder urlBuilder = ServletUriComponentsBuilder.fromCurrentContextPath().path("/auth/verify_email");
-                    EmailVerificationEvent regenerateEmailVerificationEvent = new EmailVerificationEvent(registeredUser, newEmailToken, urlBuilder);
-                    applicationEventPublisher.publishEvent(regenerateEmailVerificationEvent);
+                    UriComponentsBuilder urlBuilder = ServletUriComponentsBuilder
+                            .fromCurrentContextPath()
+                            .path("/auth/verify_email");
+
+                    EmailVerificationEvent emailVerificationEvent = new EmailVerificationEvent(
+                            registeredUser,
+                            newEmailToken,
+                            urlBuilder
+                    );
+                    applicationEventPublisher.publishEvent(emailVerificationEvent);
                     return ResponseEntity.ok(new ApiResponse("Email verification resent successfully", true));
                 })
-                .orElseThrow(() -> new InvalidTokenRequestException("Email Verification Token", existingToken, "No user associated with this request. Re-verification denied"));
+                .orElseThrow(() -> new InvalidTokenRequestException(
+                        "Email Verification Token",
+                        existingToken,
+                        "No user associated with this request. Re-verification denied")
+                );
     }
 
     /**
