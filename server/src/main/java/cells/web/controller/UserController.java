@@ -1,10 +1,9 @@
 package cells.web.controller;
 
 import cells.application.exception.UpdatePasswordException;
-import cells.application.payload.request.LogOutRequest;
 import cells.application.payload.request.UpdatePasswordRequest;
 import cells.application.payload.response.ApiResponse;
-import cells.domain.aggregate.event.OnUserAccountChangeEvent;
+import cells.domain.aggregate.event.AccountChangeEvent;
 import cells.domain.entity.CustomUserDetails;
 import cells.infrastructure.security.CurrentUser;
 import cells.infrastructure.service.AuthService;
@@ -76,7 +75,7 @@ public class UserController {
     ) {
         return authService.updatePassword(customUserDetails, updatePasswordRequest)
                 .map(updatedUser -> {
-                    OnUserAccountChangeEvent onUserPasswordChangeEvent = new OnUserAccountChangeEvent(updatedUser, "Update Password", "Change successful");
+                    AccountChangeEvent onUserPasswordChangeEvent = new AccountChangeEvent(updatedUser, "Update Password", "Change successful");
                     eventPublisher.publishEvent(onUserPasswordChangeEvent);
                     return ResponseEntity.ok(new ApiResponse("Password changed successfully", true));
                 })
@@ -89,12 +88,8 @@ public class UserController {
      */
     @PostMapping("/logout")
     @ApiOperation(value = "Logs the specified user device and clears the refresh tokens associated with it")
-    public ResponseEntity logoutUser(
-            @CurrentUser CustomUserDetails customUserDetails,
-            @ApiParam(value = "The LogOutRequest payload")
-            @Valid @RequestBody LogOutRequest logOutRequest
-    ) {
-        userService.logoutUser(customUserDetails, logOutRequest);
+    // TODO: Work on this later
+    public ResponseEntity logoutUser(@CurrentUser CustomUserDetails customUserDetails) {
         return ResponseEntity.ok(new ApiResponse("Log out successful", true));
     }
 }
