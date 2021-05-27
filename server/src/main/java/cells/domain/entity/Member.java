@@ -14,7 +14,7 @@ import java.time.Period;
 @Data
 @Entity
 @NoArgsConstructor
-public class Member extends EntityAudit {
+public class Member extends EntityAudit<String> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -39,7 +39,8 @@ public class Member extends EntityAudit {
     private  Integer age;
 
     // This allows for unit testing
-    public Member(String firstname, String lastname, String email, LocalDate dob) {
+    public Member(Long id, String firstname, String lastname, String email, LocalDate dob) {
+        this.id = id;
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
