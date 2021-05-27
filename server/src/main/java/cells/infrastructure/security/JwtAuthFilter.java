@@ -1,5 +1,6 @@
 package cells.infrastructure.security;
 
+import cells.infrastructure.service.CustomUserDetailsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
