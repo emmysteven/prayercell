@@ -75,8 +75,12 @@ public class UserController {
     ) {
         return authService.updatePassword(customUserDetails, updatePasswordRequest)
                 .map(updatedUser -> {
-                    AccountChangeEvent onUserPasswordChangeEvent = new AccountChangeEvent(updatedUser, "Update Password", "Change successful");
-                    eventPublisher.publishEvent(onUserPasswordChangeEvent);
+                    AccountChangeEvent accountChangeEvent = new AccountChangeEvent(
+                            updatedUser,
+                            "Update Password",
+                            "Change successful"
+                    );
+                    eventPublisher.publishEvent(accountChangeEvent);
                     return ResponseEntity.ok(new ApiResponse("Password changed successfully", true));
                 })
                 .orElseThrow(() -> new UpdatePasswordException("--Empty--", "No such user present."));
