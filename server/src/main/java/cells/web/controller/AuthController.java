@@ -49,7 +49,7 @@ public class AuthController {
      * Checks is a given email is in use or not.
      */
     @ApiOperation(value = "Checks if the given email is in use")
-    @GetMapping("/checkEmailInUse")
+    @GetMapping("/check_email")
     public ResponseEntity checkEmailInUse(
             @ApiParam(value = "Email id to check against")
             @RequestParam("email") String email
@@ -62,7 +62,7 @@ public class AuthController {
      * Checks is a given username is in use or not.
      */
     @ApiOperation(value = "Checks if the given username is in use")
-    @GetMapping("/checkUsernameInUse")
+    @GetMapping("/check_username")
     public ResponseEntity checkUsernameInUse(
             @ApiParam(value = "Username to check against")
             @RequestParam("username") String username
@@ -93,7 +93,11 @@ public class AuthController {
                     //generate new access token
                     String jwtToken = authService.generateToken(customUserDetails);
                     //then return token and access token
-                    return ResponseEntity.ok(new JwtAuthenticationResponse(jwtToken, refreshToken, jwtUtil.getExpiryDuration()));
+                    return ResponseEntity.ok(new JwtAuthenticationResponse(
+                            jwtToken,
+                            refreshToken,
+                            jwtUtil.getExpiryDuration())
+                    );
                 })
                 .orElseThrow(() -> new LoginException("Couldn't create refresh token for: [" + loginRequest + "]"));
     }
@@ -110,11 +114,17 @@ public class AuthController {
     ) {
         return authService.registerUser(signupRequest)
                 .map(user -> {
-                    UriComponentsBuilder urlBuilder = ServletUriComponentsBuilder.fromCurrentContextPath().path("/auth/verify_email");
+                    UriComponentsBuilder urlBuilder = ServletUriComponentsBuilder
+                            .fromCurrentContextPath()
+                            .path("/auth/verify_email");
+
                     RegistrationEvent registrationEvent = new RegistrationEvent(user, urlBuilder);
                     applicationEventPublisher.publishEvent(registrationEvent);
                     log.info("Registered User returned [API[: " + user);
-                    return ResponseEntity.ok(new ApiResponse("User registered successfully. Check your email for verification", true));
+                    return ResponseEntity.ok(new ApiResponse(
+                            "User registered successfully. Check your email for verification",
+                            true)
+                    );
                 })
                 .orElseThrow(() -> new SignupException(signupRequest.getEmail(), "Missing user object in database"));
     }
@@ -133,13 +143,17 @@ public class AuthController {
     ) {
         return authService.generatePasswordResetToken(passwordResetLinkRequest)
                 .map(passwordResetToken -> {
-                    UriComponentsBuilder urlBuilder = ServletUriComponentsBuilder.fromCurrentContextPath().path("/password/reset");
+                    UriComponentsBuilder urlBuilder = ServletUriComponentsBuilder
+                            .fromCurrentContextPath()
+                            .path("/password/reset");
                     ResetLinkEvent generateResetLinkMailEvent = new ResetLinkEvent(passwordResetToken,
                             urlBuilder);
                     applicationEventPublisher.publishEvent(generateResetLinkMailEvent);
                     return ResponseEntity.ok(new ApiResponse("Password reset link sent successfully", true));
                 })
-                .orElseThrow(() -> new PasswordResetLinkException(passwordResetLinkRequest.getEmail(), "Couldn't create a valid token"));
+                .orElseThrow(() -> new PasswordResetLinkException(
+                        passwordResetLinkRequest.getEmail(),
+                        "Couldn't create a valid token"));
     }
 
     /**
@@ -176,7 +190,11 @@ public class AuthController {
     ) {
         return authService.confirmEmailRegistration(token)
                 .map(user -> ResponseEntity.ok(new ApiResponse("User verified successfully", true)))
-                .orElseThrow(() -> new InvalidTokenRequestException("Email Verification Token", token, "Failed to confirm. Please generate a new email verification request"));
+                .orElseThrow(() -> new InvalidTokenRequestException(
+                        "Email Verification Token",
+                        token,
+                        "Failed to confirm. Please generate a new email verification request")
+                );
     }
 
     /**
@@ -195,7 +213,11 @@ public class AuthController {
             @RequestParam("token") String existingToken
     ) {
         EmailVerificationToken newEmailToken = authService.recreateRegistrationToken(existingToken)
-                .orElseThrow(() -> new InvalidTokenRequestException("Email Verification Token", existingToken, "User is already registered. No need to re-generate token"));
+                .orElseThrow(() -> new InvalidTokenRequestException(
+                        "Email Verification Token",
+                        existingToken,
+                        "User is already registered. No need to re-generate token")
+                );
 
         return Optional.ofNullable(newEmailToken.getUser())
                 .map(registeredUser -> {
