@@ -3,10 +3,10 @@ package cells.web.controller;
 import cells.application.exception.*;
 import cells.application.payload.request.*;
 import cells.application.payload.response.ApiResponse;
-import cells.domain.aggregate.event.OnGenerateResetLinkEvent;
-import cells.domain.aggregate.event.OnRegenerateEmailVerificationEvent;
-import cells.domain.aggregate.event.OnUserAccountChangeEvent;
-import cells.domain.aggregate.event.OnUserRegistrationCompleteEvent;
+import cells.domain.aggregate.event.ResetLinkEvent;
+import cells.domain.aggregate.event.EmailVerificationEvent;
+import cells.domain.aggregate.event.AccountChangeEvent;
+import cells.domain.aggregate.event.RegistrationEvent;
 import cells.domain.entity.CustomUserDetails;
 import cells.domain.entity.token.EmailVerificationToken;
 import cells.domain.entity.token.RefreshToken;
@@ -28,7 +28,7 @@ import java.util.Optional;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/auth")
 @Api(value = "Authorization Rest API", description = "Defines endpoints that can be hit only when the user is not logged in. It's not secured by default.")
 public class AuthController {
     private final JwtUtil jwtUtil;
@@ -87,7 +87,7 @@ public class AuthController {
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
         log.info("Logged in User returned [API]: " + customUserDetails.getUsername());
 
-        return authService.createAndPersistRefreshTokenForDevice(authentication, loginRequest)
+        return authService.createAndPersistRefreshToken(authentication, loginRequest)
                 .map(RefreshToken::getToken)
                 .map(refreshToken -> {
                     //generate new access token
@@ -110,9 +110,9 @@ public class AuthController {
     ) {
         return authService.registerUser(signupRequest)
                 .map(user -> {
-                    UriComponentsBuilder urlBuilder = ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/auth/registrationConfirmation");
-                    OnUserRegistrationCompleteEvent onUserRegistrationCompleteEvent = new OnUserRegistrationCompleteEvent(user, urlBuilder);
-                    applicationEventPublisher.publishEvent(onUserRegistrationCompleteEvent);
+                    UriComponentsBuilder urlBuilder = ServletUriComponentsBuilder.fromCurrentContextPath().path("/auth/verify_email");
+                    RegistrationEvent registrationEvent = new RegistrationEvent(user, urlBuilder);
+                    applicationEventPublisher.publishEvent(registrationEvent);
                     log.info("Registered User returned [API[: " + user);
                     return ResponseEntity.ok(new ApiResponse("User registered successfully. Check your email for verification", true));
                 })
@@ -134,7 +134,7 @@ public class AuthController {
         return authService.generatePasswordResetToken(passwordResetLinkRequest)
                 .map(passwordResetToken -> {
                     UriComponentsBuilder urlBuilder = ServletUriComponentsBuilder.fromCurrentContextPath().path("/password/reset");
-                    OnGenerateResetLinkEvent generateResetLinkMailEvent = new OnGenerateResetLinkEvent(passwordResetToken,
+                    ResetLinkEvent generateResetLinkMailEvent = new ResetLinkEvent(passwordResetToken,
                             urlBuilder);
                     applicationEventPublisher.publishEvent(generateResetLinkMailEvent);
                     return ResponseEntity.ok(new ApiResponse("Password reset link sent successfully", true));
@@ -156,7 +156,7 @@ public class AuthController {
     ) {
         return authService.resetPassword(passwordResetRequest)
                 .map(changedUser -> {
-                    OnUserAccountChangeEvent onPasswordChangeEvent = new OnUserAccountChangeEvent(changedUser, "Reset Password",
+                    AccountChangeEvent onPasswordChangeEvent = new AccountChangeEvent(changedUser, "Reset Password",
                             "Changed Successfully");
                     applicationEventPublisher.publishEvent(onPasswordChangeEvent);
                     return ResponseEntity.ok(new ApiResponse("Password changed successfully", true));
@@ -191,7 +191,7 @@ public class AuthController {
             "any attempts at generating new token from past (possibly archived/deleted)" +
             "tokens should fail and report an exception. ")
     public ResponseEntity resendRegistrationToken(
-            @ApiParam(value = "the initial token that was sent to the user email after registration")
+            @ApiParam(value = "the initial token that was sent to the u ser email after registration")
             @RequestParam("token") String existingToken
     ) {
         EmailVerificationToken newEmailToken = authService.recreateRegistrationToken(existingToken)
@@ -199,8 +199,8 @@ public class AuthController {
 
         return Optional.ofNullable(newEmailToken.getUser())
                 .map(registeredUser -> {
-                    UriComponentsBuilder urlBuilder = ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/auth/registrationConfirmation");
-                    OnRegenerateEmailVerificationEvent regenerateEmailVerificationEvent = new OnRegenerateEmailVerificationEvent(registeredUser, urlBuilder, newEmailToken);
+                    UriComponentsBuilder urlBuilder = ServletUriComponentsBuilder.fromCurrentContextPath().path("/auth/verify_email");
+                    EmailVerificationEvent regenerateEmailVerificationEvent = new EmailVerificationEvent(registeredUser, newEmailToken, urlBuilder);
                     applicationEventPublisher.publishEvent(regenerateEmailVerificationEvent);
                     return ResponseEntity.ok(new ApiResponse("Email verification resent successfully", true));
                 })
@@ -211,20 +211,21 @@ public class AuthController {
      * Refresh the expired jwt token using a refresh token for the specific device
      * and return a new token to the caller
      */
-    @PostMapping("/refresh")
-    @ApiOperation(value = "Refresh the expired jwt authentication by issuing a token refresh request and returns the" +
-            "updated response tokens")
-    public ResponseEntity refreshJwtToken(
-            @ApiParam(value = "The TokenRefreshRequest payload")
-            @Valid @RequestBody TokenRefreshRequest tokenRefreshRequest
-    ) {
-        return authService.refreshJwtToken(tokenRefreshRequest)
-                .map(updatedToken -> {
-                    String refreshToken = tokenRefreshRequest.getRefreshToken();
-                    log.info("Created new Jwt Auth token: " + updatedToken);
-                    return ResponseEntity.ok(new JwtAuthenticationResponse(updatedToken, refreshToken, jwtUtil.getExpiryDuration()));
-                })
-                .orElseThrow(() -> new TokenRefreshException(tokenRefreshRequest.getRefreshToken(), "Unexpected error during token refresh. Please logout and login again."));
-    }
+    //TODO: WORK ON THIS LATER
+//    @PostMapping("/refresh")
+//    @ApiOperation(value = "Refresh the expired jwt authentication by issuing a token refresh request and returns the" +
+//            "updated response tokens")
+//    public ResponseEntity refreshJwtToken(
+//            @ApiParam(value = "The TokenRefreshRequest payload")
+//            @Valid @RequestBody TokenRefreshRequest tokenRefreshRequest
+//    ) {
+//        return authService.refreshJwtToken(tokenRefreshRequest)
+//                .map(updatedToken -> {
+//                    String refreshToken = tokenRefreshRequest.getRefreshToken();
+//                    log.info("Created new Jwt Auth token: " + updatedToken);
+//                    return ResponseEntity.ok(new JwtAuthenticationResponse(updatedToken, refreshToken, jwtUtil.getExpiryDuration()));
+//                })
+//                .orElseThrow(() -> new TokenRefreshException(tokenRefreshRequest.getRefreshToken(), "Unexpected error during token refresh. Please logout and login again."));
+//    }
 }
 
