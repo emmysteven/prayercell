@@ -17,7 +17,7 @@ import java.time.Period;
 public class Member extends EntityAudit<String> {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @NotBlank
