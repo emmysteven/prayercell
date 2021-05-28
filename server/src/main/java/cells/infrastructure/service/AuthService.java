@@ -26,26 +26,26 @@ public class AuthService {
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
     private final RefreshTokenService refreshTokenService;
+    private final ResetPasswordService resetPasswordService;
     private final AuthenticationManager authenticationManager;
-    private final PasswordResetTokenService passwordResetTokenService;
-    private final EmailVerificationTokenService emailVerificationTokenService;
+    private final EmailVerificationService emailVerificationService;
 
     public AuthService(
             JwtUtil jwtUtil,
             UserService userService,
             PasswordEncoder passwordEncoder,
             RefreshTokenService refreshTokenService,
+            ResetPasswordService resetPasswordService,
             AuthenticationManager authenticationManager,
-            PasswordResetTokenService passwordResetTokenService,
-            EmailVerificationTokenService emailVerificationTokenService
+            EmailVerificationService emailVerificationService
     ) {
         this.jwtUtil = jwtUtil;
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
         this.refreshTokenService = refreshTokenService;
+        this.resetPasswordService = resetPasswordService;
         this.authenticationManager = authenticationManager;
-        this.passwordResetTokenService = passwordResetTokenService;
-        this.emailVerificationTokenService = emailVerificationTokenService;
+        this.emailVerificationService = emailVerificationService;
     }
 
     /**
@@ -100,7 +100,7 @@ public class AuthService {
      * If user is already verified, save the unnecessary database calls.
      */
     public Optional<User> confirmEmailRegistration(String emailToken) {
-        EmailVerificationToken emailVerificationToken = emailVerificationTokenService.findByToken(emailToken)
+        EmailVerificationToken emailVerificationToken = emailVerificationService.findByToken(emailToken)
                 .orElseThrow(() -> new ResourceNotFoundException("Token", "Email verification", emailToken));
 
         User registeredUser = emailVerificationToken.getUser();
@@ -109,9 +109,9 @@ public class AuthService {
             return Optional.of(registeredUser);
         }
 
-        emailVerificationTokenService.verifyExpiration(emailVerificationToken);
+        emailVerificationService.verifyExpiration(emailVerificationToken);
         emailVerificationToken.setConfirmedStatus();
-        emailVerificationTokenService.save(emailVerificationToken);
+        emailVerificationService.save(emailVerificationToken);
 
         registeredUser.markVerificationConfirmed();
         userService.save(registeredUser);
@@ -124,13 +124,13 @@ public class AuthService {
      * else update the token value and add a new expiration.
      */
     public Optional<EmailVerificationToken> recreateRegistrationToken(String existingToken) {
-        EmailVerificationToken emailVerificationToken = emailVerificationTokenService.findByToken(existingToken)
+        EmailVerificationToken emailVerificationToken = emailVerificationService.findByToken(existingToken)
                 .orElseThrow(() -> new ResourceNotFoundException("Token", "Existing email verification", existingToken));
 
         if (emailVerificationToken.getUser().getEmailVerified()) {
             return Optional.empty();
         }
-        return Optional.ofNullable(emailVerificationTokenService.updateExistingTokenWithNameAndExpiry(emailVerificationToken));
+        return Optional.ofNullable(emailVerificationService.updateExistingTokenWithNameAndExpiry(emailVerificationToken));
     }
 
     /**
@@ -219,9 +219,9 @@ public class AuthService {
         String email = passwordResetLinkRequest.getEmail();
         return userService.findByEmail(email)
                 .map(user -> {
-                    PasswordResetToken passwordResetToken = passwordResetTokenService.createToken();
+                    PasswordResetToken passwordResetToken = resetPasswordService.createToken();
                     passwordResetToken.setUser(user);
-                    passwordResetTokenService.save(passwordResetToken);
+                    resetPasswordService.save(passwordResetToken);
                     return Optional.of(passwordResetToken);
                 })
                 .orElseThrow(() -> new PasswordResetLinkException(
@@ -235,11 +235,11 @@ public class AuthService {
      */
     public Optional<User> resetPassword(PasswordResetRequest passwordResetRequest) {
         String token = passwordResetRequest.getToken();
-        PasswordResetToken passwordResetToken = passwordResetTokenService
+        PasswordResetToken passwordResetToken = resetPasswordService
                 .findByToken(token)
                 .orElseThrow(() -> new ResourceNotFoundException("Password Reset Token", "Token Id", token));
 
-        passwordResetTokenService.verifyExpiration(passwordResetToken);
+        resetPasswordService.verifyExpiration(passwordResetToken);
         final String encodedPassword = passwordEncoder.encode(passwordResetRequest.getPassword());
 
         return Optional.of(passwordResetToken)
