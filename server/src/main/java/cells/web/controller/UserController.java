@@ -3,7 +3,7 @@ package cells.web.controller;
 import cells.application.exception.UpdatePasswordException;
 import cells.application.payload.request.UpdatePasswordRequest;
 import cells.application.payload.response.ApiResponse;
-import cells.domain.aggregate.event.AccountChangeEvent;
+import cells.domain.event.AccountChangeEvent;
 import cells.domain.entity.CustomUserDetails;
 import cells.infrastructure.security.CurrentUser;
 import cells.infrastructure.service.AuthService;
