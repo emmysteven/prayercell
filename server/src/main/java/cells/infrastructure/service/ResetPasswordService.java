@@ -12,14 +12,14 @@ import java.time.Instant;
 import java.util.Optional;
 
 @Service
-public class PasswordResetTokenService {
+public class ResetPasswordService {
 
     private final PasswordResetTokenRepository repository;
 
     @Value("${app.token.password.reset.duration}")
     private Long expiration;
 
-    public PasswordResetTokenService(PasswordResetTokenRepository repository) {
+    public ResetPasswordService(PasswordResetTokenRepository repository) {
         this.repository = repository;
     }
 
