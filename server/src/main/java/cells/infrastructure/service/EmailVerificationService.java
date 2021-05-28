@@ -16,14 +16,14 @@ import java.util.UUID;
 
 @Slf4j
 @Service
-public class EmailVerificationTokenService {
+public class EmailVerificationService {
 
     private final EmailVerificationTokenRepository repository;
 
     @Value("${app.token.email.verification.duration}")
     private Long emailVerificationTokenExpiryDuration;
 
-    public EmailVerificationTokenService(EmailVerificationTokenRepository repository) {
+    public EmailVerificationService(EmailVerificationTokenRepository repository) {
         this.repository = repository;
     }
 
