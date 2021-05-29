@@ -186,7 +186,7 @@ public class AuthController {
      * Confirm the email verification token generated for the user during
      * registration. If token is invalid or token is expired, report error.
      */
-    @GetMapping("/registrationConfirmation")
+    @GetMapping("/verify_email")
     @ApiOperation(value = "Confirms the email verification token that has been generated for the user during registration")
     public ResponseEntity confirmRegistration(
             @ApiParam(value = "the token that was sent to the user email")
