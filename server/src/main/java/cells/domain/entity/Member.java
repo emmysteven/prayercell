@@ -8,16 +8,18 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Period;
 
 @Data
 @Entity
 @NoArgsConstructor
-public class Member extends EntityAudit<String> {
+public class Member extends EntityAudit<String> implements Serializable {
+    private static final long serialVersionUID = 5L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank
