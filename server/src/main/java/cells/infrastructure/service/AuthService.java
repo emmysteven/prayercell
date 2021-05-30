@@ -183,11 +183,6 @@ public class AuthService {
      */
     public Optional<RefreshToken> createAndPersistRefreshToken(Authentication authentication, LoginRequest loginRequest) {
         User currentUser = (User) authentication.getPrincipal();
-        //if successful login -> remove old refresh token
-//        userDeviceService.findByUserId(currentUser.getId())
-//                .map(UserDevice::getRefreshToken)
-//                .map(RefreshToken::getId)
-//                .ifPresent(refreshTokenService::deleteById);
 
         //Save new refreshToken
         RefreshToken refreshToken = refreshTokenService.createRefreshToken();
@@ -201,16 +196,22 @@ public class AuthService {
      * * generate a new jwt. If the refresh token is inactive for a device or it is expired,
      * * throw appropriate errors.
      */
-//    public Optional<String> refreshJwtToken(TokenRefreshRequest tokenRefreshRequest) {
-//        String requestRefreshToken = tokenRefreshRequest.getRefreshToken();
-//
-//        return Optional.of(refreshTokenService.findByToken(requestRefreshToken)
-//                .map(refreshToken -> {
-//                    refreshTokenService.verifyExpiration(refreshToken);
-//                    refreshTokenService.increaseCount(refreshToken);
-//                    return refreshToken;
-//                });
-//    }
+    public Optional<String> refreshJwtToken(TokenRefreshRequest tokenRefreshRequest) {
+        String requestRefreshToken = tokenRefreshRequest.getRefreshToken();
+
+        return Optional.of(refreshTokenService.findByToken(requestRefreshToken)
+                .map(refreshToken -> {
+                    refreshTokenService.verifyExpiration(refreshToken);
+                    refreshTokenService.increaseCount(refreshToken);
+                    return refreshToken;
+                })
+                .map(RefreshToken::getUser)
+                .map(User::getId).map(this::generateTokenFromUserId))
+                .orElseThrow(() -> new TokenRefreshException(
+                        requestRefreshToken,
+                        "Missing refresh token in database. Please login again")
+                );
+    }
 
     /**
      * Generates a password reset token from the given reset request
