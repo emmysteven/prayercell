@@ -1,9 +1,11 @@
 package cells.application.payload.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 
+@Data
 @Schema(name = "Update password Request", description = "The update password request payload")
 public class UpdatePasswordRequest {
 
@@ -23,19 +25,4 @@ public class UpdatePasswordRequest {
     public UpdatePasswordRequest() {
     }
 
-    public String getOldPassword() {
-        return oldPassword;
-    }
-
-    public void setOldPassword(String oldPassword) {
-        this.oldPassword = oldPassword;
-    }
-
-    public String getNewPassword() {
-        return newPassword;
-    }
-
-    public void setNewPassword(String newPassword) {
-        this.newPassword = newPassword;
-    }
 }
