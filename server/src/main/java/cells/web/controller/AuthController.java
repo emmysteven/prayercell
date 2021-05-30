@@ -248,21 +248,27 @@ public class AuthController {
      * Refresh the expired jwt token using a refresh token for the specific device
      * and return a new token to the caller
      */
-    //TODO: WORK ON THIS LATER
-//    @PostMapping("/refresh")
-//    @Operation(summary = "Refresh the expired jwt authentication by issuing a token refresh request and returns the" +
-//            "updated response tokens")
-//    public ResponseEntity refreshJwtToken(
-//            @Parameter(description = "The TokenRefreshRequest payload")
-//            @Valid @RequestBody TokenRefreshRequest tokenRefreshRequest
-//    ) {
-//        return authService.refreshJwtToken(tokenRefreshRequest)
-//                .map(updatedToken -> {
-//                    String refreshToken = tokenRefreshRequest.getRefreshToken();
-//                    log.info("Created new Jwt Auth token: " + updatedToken);
-//                    return ResponseEntity.ok(new JwtAuthenticationResponse(updatedToken, refreshToken, jwtUtil.getExpiryDuration()));
-//                })
-//                .orElseThrow(() -> new TokenRefreshException(tokenRefreshRequest.getRefreshToken(), "Unexpected error during token refresh. Please logout and login again."));
-//    }
+    @PostMapping("/refresh")
+    @Operation(summary = "Refresh the expired jwt authentication by issuing a token refresh request and returns the" +
+            "updated response tokens")
+    public ResponseEntity refreshJwtToken(
+            @Parameter(description = "The TokenRefreshRequest payload")
+            @Valid @RequestBody TokenRefreshRequest tokenRefreshRequest
+    ) {
+        return authService.refreshJwtToken(tokenRefreshRequest)
+                .map(updatedToken -> {
+                    String refreshToken = tokenRefreshRequest.getRefreshToken();
+                    log.info("Created new Jwt Auth token: " + updatedToken);
+                    return ResponseEntity.ok(new JwtAuthenticationResponse(
+                            updatedToken,
+                            refreshToken,
+                            jwtUtil.getExpiryDuration())
+                    );
+                })
+                .orElseThrow(() -> new TokenRefreshException(
+                        tokenRefreshRequest.getRefreshToken(),
+                        "Unexpected error during token refresh. Please logout and login again.")
+                );
+    }
 }
 
