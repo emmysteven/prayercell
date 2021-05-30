@@ -1,15 +1,14 @@
 package cells.application.payload.request;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.validation.constraints.NotBlank;
 
-@ApiModel(value = "Token refresh Request", description = "The jwt token refresh request payload")
+@Schema(name = "Token refresh Request", description = "The jwt token refresh request payload")
 public class TokenRefreshRequest {
 
     @NotBlank(message = "Refresh token cannot be blank")
-    @ApiModelProperty(value = "Valid refresh token passed during earlier successful authentications", required = true,
+    @Schema(description = "Valid refresh token passed during earlier successful authentications", required = true,
             allowableValues = "NonEmpty String")
     private String refreshToken;
 
