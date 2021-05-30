@@ -1,12 +1,12 @@
 package cells.domain.entity.token;
 
+import cells.domain.entity.User;
 import cells.domain.entity.common.BaseEntity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.NaturalId;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
+import javax.persistence.*;
 import java.time.Instant;
 
 @Data
@@ -18,13 +18,18 @@ public class RefreshToken extends BaseEntity {
     @NaturalId(mutable = true)
     private String token;
 
+    @OneToOne(optional = false, cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", unique = true)
+    private User user;
+
     private Long refreshCount;
 
     @Column(nullable = false)
     private Instant expiryDate;
 
-    public RefreshToken(String token, Long refreshCount, Instant expiryDate) {
+    public RefreshToken(String token, User user, Long refreshCount, Instant expiryDate) {
         this.token = token;
+        this.user = user;
         this.refreshCount = refreshCount;
         this.expiryDate = expiryDate;
     }
