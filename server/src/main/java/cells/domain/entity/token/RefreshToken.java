@@ -18,8 +18,8 @@ public class RefreshToken extends BaseEntity {
     @NaturalId(mutable = true)
     private String token;
 
-    @OneToOne(optional = false, cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id", unique = true)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     private Long refreshCount;
@@ -27,11 +27,12 @@ public class RefreshToken extends BaseEntity {
     @Column(nullable = false)
     private Instant expiryDate;
 
-    public RefreshToken(String token, User user, Long refreshCount, Instant expiryDate) {
-        this.token = token;
+    public RefreshToken(Long id, String token, User user, Long refreshCount, Instant expiryDate) {
+        this.id = id;
         this.user = user;
-        this.refreshCount = refreshCount;
+        this.token = token;
         this.expiryDate = expiryDate;
+        this.refreshCount = refreshCount;
     }
 
     public void incrementRefreshCount() {

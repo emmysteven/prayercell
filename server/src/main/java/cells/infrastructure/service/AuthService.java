@@ -185,7 +185,7 @@ public class AuthService {
         User currentUser = (User) authentication.getPrincipal();
 
         //Save new refreshToken
-        RefreshToken refreshToken = refreshTokenService.createRefreshToken();
+        RefreshToken refreshToken = refreshTokenService.createRefreshToken(currentUser);
         refreshToken = refreshTokenService.save(refreshToken);
         return Optional.ofNullable(refreshToken);
     }

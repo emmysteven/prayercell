@@ -2,6 +2,7 @@ package cells.infrastructure.service;
 
 import cells.application.exception.TokenRefreshException;
 import cells.application.util.Util;
+import cells.domain.entity.User;
 import cells.domain.entity.token.RefreshToken;
 import cells.infrastructure.repository.RefreshTokenRepository;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,10 +41,11 @@ public class RefreshTokenService {
     /**
      * Creates and returns a new refresh token
      */
-    public RefreshToken createRefreshToken() {
+    public RefreshToken createRefreshToken(User user) {
         RefreshToken refreshToken = new RefreshToken();
         refreshToken.setExpiryDate(Instant.now().plusMillis(refreshTokenDurationMs));
         refreshToken.setToken(Util.generateRandomUuid());
+        refreshToken.setUser(user);
         refreshToken.setRefreshCount(0L);
         return refreshToken;
     }
