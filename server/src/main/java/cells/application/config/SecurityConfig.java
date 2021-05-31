@@ -42,6 +42,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 )
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    protected static final String[] ACTUATOR_WHITELIST = {
+            "/actuator/**",
+            "/health/**",
+            "/health"
+    };
+
     protected static final String[] SWAGGER_WHITELIST = {
             "/v3/api-docs/**",
             "/swagger-ui/**",
@@ -73,6 +79,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
+    }
+
+    @Override
+    public void configure(WebSecurity webSecurity) throws Exception {
+        webSecurity.ignoring().antMatchers(ACTUATOR_WHITELIST);
     }
 
     @Override
