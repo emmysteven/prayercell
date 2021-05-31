@@ -10,6 +10,7 @@ import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -41,8 +42,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 )
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final CustomUserDetailsService customUserDetailsService;
+    protected static final String[] SWAGGER_WHITELIST = {
+            "/v3/api-docs/**",
+            "/swagger-ui/**",
+            "/swagger-ui.html",
+    };
 
+    private final CustomUserDetailsService customUserDetailsService;
     private final JwtAuthEntryPoint jwtAuthEntryPoint;
 
     public SecurityConfig(
@@ -79,10 +85,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
 
-        // We don't need CSRF for this example
         httpSecurity.cors().and().csrf().disable()
                 // dont authenticate this particular request
-                .authorizeRequests().antMatchers("/auth/**").permitAll()
+                .authorizeRequests()
+                .antMatchers("/auth/**").permitAll()
+                .antMatchers(SWAGGER_WHITELIST).permitAll()
                 // all other requests need to be authenticated
                 .anyRequest().authenticated()
                 // make sure we use stateless session; session won't be used to
