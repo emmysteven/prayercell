@@ -51,7 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected static final String[] SWAGGER_WHITELIST = {
             "/v3/api-docs/**",
             "/swagger-ui/**",
-            "/swagger-ui.html",
+            "/swagger-ui.h tml",
     };
 
     private final CustomUserDetailsService customUserDetailsService;
@@ -82,7 +82,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    public void configure(WebSecurity webSecurity) throws Exception {
+    public void configure(WebSecurity webSecurity) {
         webSecurity.ignoring().antMatchers(ACTUATOR_WHITELIST);
     }
 
@@ -101,6 +101,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/auth/**").permitAll()
                 .antMatchers(SWAGGER_WHITELIST).permitAll()
+                .antMatchers(ACTUATOR_WHITELIST).permitAll()
                 // all other requests need to be authenticated
                 .anyRequest().authenticated()
                 // make sure we use stateless session; session won't be used to
