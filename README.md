@@ -64,10 +64,10 @@ This project will also help prayer cell leaders:
 - [x] Repository Pattern - Generic
 - [ ] CQRS and Event Sourcing
 - [x] Logging
-- [ ] Swagger UI
+- [x] Swagger UI
 - [x] Response Wrappers
 - [x] Pagination
-- [ ] Redis Cache
+- [x] Redis Cache
 - [x] RDBMS
 - [x] JWT Authentication
 - [x] Custom Exception Handler
