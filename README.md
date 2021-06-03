@@ -71,8 +71,8 @@ This project will also help prayer cell leaders:
 - [x] RDBMS
 - [x] JWT Authentication
 - [x] Custom Exception Handler
-- [ ] Email Service
-- [ ] Complete User Management Module (Register / Generate Token / Forgot Password / Confirmation Mail)
+- [x] Email Service
+- [x] Complete User Management Module (Register / Generate Token / Forgot Password / Confirmation Mail)
 
 
 ## Prerequisites
