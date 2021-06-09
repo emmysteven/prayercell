@@ -77,7 +77,7 @@ This project will also help prayer cell leaders:
 
 ## Prerequisites
 - IntelliJ IDEA 2021.1 & above
-- JDK 11 and above
+- JDK 16 and above
 - Basic Understanding of Spring Boot
 - I Recommend that you read:
 * [Building a RESTful Web Service](https://spring.io/guides/gs/rest-service/)
