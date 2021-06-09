@@ -77,29 +77,11 @@ public class AuthController {
      */
     @PostMapping("/login")
     @Operation(summary = "Logs the user in to the system and return the auth tokens")
-    public ResponseEntity authenticateUser(
+    public ResponseEntity<?> authenticateUser(
             @Parameter(description = "The LoginRequest payload")
             @Valid @RequestBody LoginRequest loginRequest
     ) {
-        Authentication authentication = authService.authenticateUser(loginRequest)
-                .orElseThrow(() -> new LoginException("Couldn't login user [" + loginRequest + "]"));
-
-        CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
-        log.info("Logged in User returned [API]: " + customUserDetails.getUsername());
-
-        return authService.createAndPersistRefreshToken(authentication, loginRequest)
-                .map(RefreshToken::getToken)
-                .map(refreshToken -> {
-                    //generate new access token
-                    String jwtToken = authService.generateToken(customUserDetails);
-                    //then return token and access token
-                    return ResponseEntity.ok(new JwtAuthenticationResponse(
-                            jwtToken,
-                            refreshToken,
-                            jwtUtil.getExpiryDuration())
-                    );
-                })
-                .orElseThrow(() -> new LoginException("Couldn't create refresh token for: [" + loginRequest + "]"));
+        return authService.authenticateUser(loginRequest);
     }
 
     /**
