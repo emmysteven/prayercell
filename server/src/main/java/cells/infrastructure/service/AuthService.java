@@ -10,6 +10,7 @@ import cells.domain.entity.token.EmailVerificationToken;
 import cells.domain.entity.token.RefreshToken;
 import cells.infrastructure.security.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -83,16 +84,36 @@ public class AuthService {
 
     /**
      * Authenticate user and log them in given a loginRequest
+     * @return
      */
-    public Optional<Authentication> authenticateUser(LoginRequest loginRequest) {
-        return Optional.ofNullable(
-                authenticationManager.authenticate(
-                        new UsernamePasswordAuthenticationToken(
-                                loginRequest.getUsernameOrEmail(),
-                                loginRequest.getPassword()
-                        )
-                )
+    public ResponseEntity<?> authenticateUser(LoginRequest loginRequest) {
+
+        var usernameAuthentication = new UsernamePasswordAuthenticationToken(
+                loginRequest.getUsernameOrEmail(),
+                loginRequest.getPassword()
         );
+
+        Authentication authentication = Optional.ofNullable(
+                authenticationManager.authenticate(usernameAuthentication)
+        ).orElseThrow(() -> new LoginException("Couldn't login user [" + loginRequest + "]"));
+
+        CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
+
+        log.info("Logged in User returned [API]: " + customUserDetails.getUsername());
+
+        return createAndPersistRefreshToken(authentication, loginRequest)
+                .map(RefreshToken::getToken)
+                .map(refreshToken -> {
+                    //generate new access token
+                    String jwtToken = generateToken(customUserDetails);
+                    //then return token and access token
+                    return ResponseEntity.ok(new JwtAuthenticationResponse(
+                            jwtToken,
+                            refreshToken,
+                            jwtUtil.getExpiryDuration())
+                    );
+                })
+                .orElseThrow(() -> new LoginException("Couldn't create refresh token for: [" + loginRequest + "]"));
     }
 
     /**
