@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HeaderComponent } from './components/header.component';
-import { FooterComponent } from './components/footer.component';
+import { HeaderComponent, FooterComponent } from './components';
 
 
 
@@ -12,6 +11,10 @@ import { FooterComponent } from './components/footer.component';
   ],
   imports: [
     CommonModule
-  ]
+  ],
+  exports: [
+    FooterComponent,
+    HeaderComponent
+  ],
 })
 export class SharedModule { }
