@@ -9,11 +9,7 @@ import { SignupComponent } from './signup.component';
 
 
 @NgModule({
-  declarations: [
-    LoginComponent,
-    LayoutComponent,
-    SignupComponent
-  ],
+  declarations: [LoginComponent, LayoutComponent, SignupComponent],
   imports: [
     CommonModule,
     AuthRoutingModule,
