@@ -4,12 +4,12 @@
 
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
       <div class="form-group">
-        <label for="email">Email</label>
-        <input type="text" id="email" formControlName="email" class="form-control"
-               [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
+        <label for="usernameOrEmail">Username or Email</label>
+        <input type="text" id="usernameOrEmail" formControlName="usernameOrEmail" class="form-control"
+               [ngClass]="{ 'is-invalid': submitted && f.usernameOrEmail.errors }" />
 
-        <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
-          <div *ngIf="f.email.errors.email">Email is required</div>
+        <div *ngIf="submitted && f.usernameOrEmail.errors" class="invalid-feedback">
+          <div *ngIf="f.usernameOrEmail.errors.email">Email is required</div>
         </div>
       </div>
 
