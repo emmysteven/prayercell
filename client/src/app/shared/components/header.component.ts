@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import {AuthService} from "../../core/services/auth.service";
+import {AuthService} from "@app/core/services";
 
 @Component({
   selector: 'app-header',
   template: `
     <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-      <a class="navbar-brand" routerLink="/">Restaurant</a>
+      <a class="navbar-brand" routerLink="/">Prayercell</a>
       <button
         class="navbar-toggler"
         type="button" data-toggle="collapse"
@@ -19,10 +19,10 @@ import {AuthService} from "../../core/services/auth.service";
       <div class="collapse navbar-collapse" id="navbarDefault">
         <ul class="navbar-nav ml-auto">
           <li *ngIf="!isLoggedIn()" class="nav-item">
-            <a class="nav-link" routerLink="/login">Login</a>
+            <a class="nav-link" routerLink="/login" routerLinkActive='active'>Log in</a>
           </li>
           <li *ngIf="!isLoggedIn()" class="nav-item">
-            <a class="nav-link" routerLink="/register">Register</a>
+            <a class="nav-link" routerLink="/signup" routerLinkActive='active'>Sign up</a>
           </li>
           <li *ngIf="isLoggedIn()" class="nav-item">
             <a class="nav-link" role="button" (click)="logout()">logout</a>
