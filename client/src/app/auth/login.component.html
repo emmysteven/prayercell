@@ -22,13 +22,14 @@
           <div *ngIf="f.password.errors.required">Password is required</div>
         </div>
       </div>
+      <br>
 
       <div class="form-group">
         <button [disabled]="loading" class="btn btn-primary">
           <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
           Login
         </button>
-        <a routerLink="../register" class="btn btn-link">Register</a>
+        <a routerLink="../signup" class="btn btn-link">Sign Up</a>
       </div>
 
     </form>
