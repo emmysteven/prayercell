@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HeaderComponent, FooterComponent } from './components';
+import { HeaderComponent, FooterComponent } from './index';
 import {AuthRoutingModule} from '@app/auth/auth-routing.module'
 
 

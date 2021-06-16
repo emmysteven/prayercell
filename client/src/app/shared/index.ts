@@ -1,3 +1,3 @@
-export * from './footer.component';
-export * from './header.component';
+export * from './components/footer.component';
+export * from './components/header.component';
 export * from './shared.module';
