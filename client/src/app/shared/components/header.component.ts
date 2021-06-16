@@ -8,8 +8,8 @@ import {AuthService} from "@app/core/services";
       <a class="navbar-brand" routerLink="/">Prayercell</a>
       <button
         class="navbar-toggler"
-        type="button" data-toggle="collapse"
-        data-target="#navbarDefault"
+        type="button" data-bs-toggle="collapse"
+        data-bs-target="#navbarDefault"
         aria-controls="navbarDefault"
         aria-expanded="false"
         aria-label="Toggle navigation">
@@ -17,7 +17,7 @@ import {AuthService} from "@app/core/services";
       </button>
 
       <div class="collapse navbar-collapse" id="navbarDefault">
-        <ul class="navbar-nav ml-auto">
+        <ul class="navbar-nav ms-auto">
           <li *ngIf="!isLoggedIn()" class="nav-item">
             <a class="nav-link" routerLink="/login" routerLinkActive='active'>Log in</a>
           </li>
