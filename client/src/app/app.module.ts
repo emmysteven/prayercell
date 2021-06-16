@@ -4,9 +4,8 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import {SharedModule} from "./shared/shared.module";
-import { AuthModule } from './auth/auth.module';
-import { CoreModule } from './core/core.module';
+import { SharedModule } from "@app/shared";
+import { AuthModule } from '@app/auth';
 
 @NgModule({
   declarations: [
@@ -14,11 +13,10 @@ import { CoreModule } from './core/core.module';
   ],
   imports: [
     HttpClientModule,
-    BrowserModule,
     AppRoutingModule,
+    BrowserModule,
     SharedModule,
-    AuthModule,
-    CoreModule
+    AuthModule
   ],
   providers: [],
   bootstrap: [AppComponent]
