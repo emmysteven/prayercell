@@ -39,21 +39,8 @@ export class AuthService {
   login(usernameOrEmail: string, password: string): Observable<IUser> {
     return this.http.post<IUser>(`${this.baseUrl}auth/login`, { usernameOrEmail, password })
       .pipe(map((response: any) => {
-        const token = response.data.jwToken;
-        if (response.succeeded) {
-          localStorage.setItem('token', token);
-          const decodedToken = this.helper.decodeToken(token);
-
-          this.User = {
-            id: decodedToken.id,
-            firstname: decodedToken.firstname,
-            lastname: decodedToken.lastname,
-            username: decodedToken.username,
-            email: decodedToken.email,
-            registerAsAdmin: decodedToken.registerAsAdmin,
-            password: decodedToken.password
-          }
-          console.log(this.User);
+        if (response.accessToken) {
+          localStorage.setItem('token', response.accessToken);
           this.userSubject.next(response);
         }
         return response;
