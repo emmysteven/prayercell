@@ -7,8 +7,7 @@ import { AlertService, AuthService } from "@app/core/services";
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styles: [
-  ]
+  styles: []
 })
 export class LoginComponent implements OnInit {
 
@@ -46,8 +45,8 @@ export class LoginComponent implements OnInit {
     }
 
     this.loading = true;
+
     this.authService.login(this.f.usernameOrEmail.value, this.f.password.value)
-      .pipe(first())
       .subscribe({
         next: () => {
           // get return url from query parameters or default to home page
