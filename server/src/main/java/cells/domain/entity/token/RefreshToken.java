@@ -3,6 +3,7 @@ package cells.domain.entity.token;
 import cells.domain.entity.User;
 import cells.domain.entity.common.BaseEntity;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.NaturalId;
 
@@ -10,8 +11,9 @@ import javax.persistence.*;
 import java.time.Instant;
 
 @Data
-@NoArgsConstructor
 @Entity
+@NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 public class RefreshToken extends BaseEntity {
 
     @Column(nullable = false, unique = true)

@@ -2,6 +2,7 @@ package cells.domain.entity;
 
 import cells.domain.entity.common.BaseEntity;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
@@ -9,6 +10,7 @@ import java.time.Instant;
 
 @Data
 @Entity
+@EqualsAndHashCode(callSuper = true)
 public class PasswordResetToken extends BaseEntity {
 
     @NaturalId

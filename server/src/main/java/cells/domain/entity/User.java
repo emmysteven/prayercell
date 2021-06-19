@@ -3,6 +3,7 @@ package cells.domain.entity;
 import cells.application.validation.annotation.NullOrNotBlank;
 import cells.domain.entity.common.BaseEntity;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
@@ -15,6 +16,7 @@ import java.util.Set;
 
 @Data
 @Entity(name = "users")
+@EqualsAndHashCode(callSuper = true)
 public class User extends BaseEntity {
 
     @NaturalId

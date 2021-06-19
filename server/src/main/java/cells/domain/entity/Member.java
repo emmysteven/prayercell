@@ -2,6 +2,7 @@ package cells.domain.entity;
 
 import cells.domain.entity.common.EntityAudit;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -15,6 +16,7 @@ import java.time.Period;
 @Data
 @Entity
 @NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 public class Member extends EntityAudit<String> implements Serializable {
     private static final long serialVersionUID = 5L;
 

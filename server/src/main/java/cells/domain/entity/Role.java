@@ -15,6 +15,7 @@ import java.util.Set;
  */
 @Data
 @Entity
+@EqualsAndHashCode(callSuper = true)
 public class Role extends BaseEntity {
 
     @Column(name = "role_name")

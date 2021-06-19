@@ -4,12 +4,14 @@ import cells.domain.entity.User;
 import cells.domain.entity.common.BaseEntity;
 import cells.domain.enums.TokenStatus;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import java.time.Instant;
 
 @Data
 @Entity
+@EqualsAndHashCode(callSuper = true)
 public class EmailVerificationToken extends BaseEntity {
 
     @Column(nullable = false, unique = true)

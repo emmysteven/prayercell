@@ -2,15 +2,16 @@ package cells.domain.entity;
 
 import cells.domain.entity.common.BaseEntity;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 
 @Data
-@NoArgsConstructor
 @Entity
-
+@NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 public class Cell extends BaseEntity {
 
     private String name;
