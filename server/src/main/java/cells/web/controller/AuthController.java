@@ -3,13 +3,11 @@ package cells.web.controller;
 import cells.application.exception.*;
 import cells.application.payload.request.*;
 import cells.application.payload.response.ApiResponse;
-import cells.domain.event.ResetLinkEvent;
-import cells.domain.event.EmailVerificationEvent;
-import cells.domain.event.AccountChangeEvent;
-import cells.domain.event.RegistrationEvent;
-import cells.domain.entity.CustomUserDetails;
 import cells.domain.entity.token.EmailVerificationToken;
-import cells.domain.entity.token.RefreshToken;
+import cells.domain.event.AccountChangeEvent;
+import cells.domain.event.EmailVerificationEvent;
+import cells.domain.event.RegistrationEvent;
+import cells.domain.event.ResetLinkEvent;
 import cells.infrastructure.security.JwtUtil;
 import cells.infrastructure.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,7 +16,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -230,7 +227,7 @@ public class AuthController {
      * Refresh the expired jwt token using a refresh token for the specific device
      * and return a new token to the caller
      */
-    @PostMapping("/refresh")
+    @PostMapping("/refresh_token")
     @Operation(summary = "Refresh the expired jwt authentication by issuing a token refresh request and returns the" +
             "updated response tokens")
     public ResponseEntity refreshJwtToken(
