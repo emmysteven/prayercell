@@ -19,6 +19,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
+import java.util.List;
+
 
 /**
  * Created by emmysteven.
@@ -52,7 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected static final String[] SWAGGER_WHITELIST = {
             "/v3/api-docs/**",
             "/swagger-ui/**",
-            "/swagger-ui.h tml",
+            "/swagger-ui.html",
     };
 
     private final CustomUserDetailsService customUserDetailsService;
@@ -97,9 +99,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
 
-        httpSecurity.cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues());
-
-        httpSecurity.csrf().disable()
+        httpSecurity.cors().configurationSource(request -> {
+            var config = new CorsConfiguration();
+            config.setAllowCredentials(true);
+            config.setAllowedMethods(List.of("*"));
+            config.setAllowedHeaders(List.of("*"));
+            config.setAllowedOrigins(List.of("http://localhost:4200"));
+            return config;
+        })
+                .and().cors().and().csrf().disable()
                 // dont authenticate this particular request
                 .authorizeRequests()
                 .antMatchers("/auth/**").permitAll()
