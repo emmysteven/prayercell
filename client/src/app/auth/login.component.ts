@@ -10,7 +10,6 @@ import { AlertService, AuthService } from "@app/core/services";
   styles: []
 })
 export class LoginComponent implements OnInit {
-
   form: FormGroup = new FormGroup({});
   loading = false;
   submitted = false;
@@ -47,7 +46,7 @@ export class LoginComponent implements OnInit {
     this.loading = true;
 
     this.authService.login(this.f.usernameOrEmail.value, this.f.password.value)
-      .subscribe({
+      .pipe(first()).subscribe({
         next: () => {
           // get return url from query parameters or default to home page
           const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
