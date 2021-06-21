@@ -23,6 +23,11 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    if(localStorage.getItem('user')){
+      this.router.navigate(['/']);
+      // return;
+    }
+
     this.form = this.formBuilder.group({
       usernameOrEmail: ['', Validators.required],
       password: ['', Validators.required]
