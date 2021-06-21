@@ -2,65 +2,58 @@ import { Injectable } from '@angular/core';
 import { Router } from "@angular/router";
 import { HttpClient } from "@angular/common/http";
 import { BehaviorSubject, Observable } from "rxjs";
+import { map } from "rxjs/operators";
 import { JwtHelperService } from "@auth0/angular-jwt";
 
-import { IUser } from "../models/user";
-
-import { map } from "rxjs/operators";
+import { User } from "../models/user";
 import { environment } from "@env/environment";
+
+const httpOptions = { withCredentials: true };
+const BASE_URL = environment.baseUrl;
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
+  jwtHelper = new JwtHelperService();
 
-  User: IUser = {
-    id: '',
-    firstname: '',
-    lastname: '',
-    username: '',
-    email: '',
-    registerAsAdmin: false,
-    password: ''
-  }
-  baseUrl: string = environment.baseUrl;
-  helper = new JwtHelperService();
+  private userSubject: BehaviorSubject<User>;
+  public user: Observable<User>
 
-  private userSubject: BehaviorSubject<IUser>;
-  public user: Observable<IUser>
-
-  constructor(private router: Router, private http: HttpClient) {
-    this.userSubject = new BehaviorSubject<IUser>(JSON.parse(localStorage.getItem('user')!));
+  constructor(
+    private router: Router,
+    private http: HttpClient,
+  ) {
+    this.userSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('user')!));
     this.user = this.userSubject.asObservable();
   }
 
-  public get userValue(): IUser {
+  public get userValue(): User {
     return this.userSubject.value;
   }
 
-  login(usernameOrEmail: string, password: string): Observable<IUser> {
-    return this.http.post<IUser>(`${this.baseUrl}auth/login`, { usernameOrEmail, password })
-      .pipe(map((response: any) => {
-        if (response.accessToken) {
-          localStorage.setItem('token', response.accessToken);
-          this.userSubject.next(response);
-        }
-        return response;
-      }))
+  login(usernameOrEmail: string, password: string): Observable<User> {
+    return this.http.post<User>(`${BASE_URL}auth/login`, { usernameOrEmail, password })
+      .pipe(map((user) => {
+        localStorage.setItem('user', JSON.stringify(user));
+        this.userSubject.next(user);
+        // this.startRefreshTokenTimer();
+        return user;
+      }));
   }
 
-  register(user: IUser) {
-    return this.http.post(`${this.baseUrl}auth/signup`, user);
+  register(user: User) {
+    return this.http.post(`${BASE_URL}auth/signup`, user);
   }
 
   getAll() {
-    return this.http.get<IUser[]>(`${this.baseUrl}users`);
+    return this.http.get<User[]>(`${BASE_URL}users`);
   }
 
   getById(id: string) {
-    return this.http.get<IUser>(`${this.baseUrl}user/${id}`);
+    return this.http.get<User>(`${BASE_URL}user/${id}`);
   }
 
   update(id: string, params: object) {
-    return this.http.put(`${this.baseUrl}user/${id}`, params)
+    return this.http.put(`${BASE_URL}user/${id}`, params)
       .pipe(map(x => {
         // update stored user if the logged in user updated their own record
         if (id == this.userValue.id) {
@@ -76,7 +69,7 @@ export class AuthService {
   }
 
   delete(id: string) {
-    return this.http.delete(`${this.baseUrl}user/${id}`)
+    return this.http.delete(`${BASE_URL}user/${id}`)
       .pipe(map(x => {
         // auto logout if the logged in user deleted their own record
         if (id == this.userValue.id) {
@@ -88,22 +81,42 @@ export class AuthService {
 
   isLoggedIn(): boolean {
     const token = localStorage.getItem('token') || '';
-    return !this.helper.isTokenExpired(token);
+    return !this.jwtHelper.isTokenExpired(token);
   }
 
-  logout(): void {
-    this.User = {
-      id: '',
-      firstname: '',
-      lastname: '',
-      username: '',
-      email: '',
-      registerAsAdmin: false,
-      password: ''
-    }
-    localStorage.removeItem('token');
-    this.userSubject.next(this.User);
-    this.router.navigate(['login']);
+  logout():void {
+    this.http.post<any>(`${BASE_URL}auth/revoke-token`, {}, httpOptions).subscribe();
+    this.stopRefreshTokenTimer();
+    localStorage.removeItem('user');
+    this.userSubject.next({});
+    this.router.navigate(['/login']);
+  }
+
+  refreshToken(refreshToken: string) {
+    return this.http.post<any>(`${BASE_URL}auth/refresh_token`, {refreshToken}, httpOptions)
+      .pipe(map((user) => {
+        this.userSubject.next(user);
+        this.startRefreshTokenTimer();
+        return user;
+      }));
+  }
+
+  // helper methods
+
+  private refreshTokenTimeout: any;
+
+  private startRefreshTokenTimer() {
+    // parse json object from base64 encoded jwt token
+    const accessToken = this.jwtHelper.decodeToken(this.userValue.accessToken);
+
+    // set a timeout to refresh the token a minute before it expires
+    const expires = new Date(accessToken.exp * 1000);
+    const timeout = expires.getTime() - Date.now() - (60 * 1000);
+    this.refreshTokenTimeout = setTimeout(() => this.refreshToken(accessToken).subscribe(), timeout);
+  }
+
+  private stopRefreshTokenTimer() {
+    clearTimeout(this.refreshTokenTimeout);
   }
 
 }
