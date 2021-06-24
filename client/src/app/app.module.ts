@@ -9,7 +9,8 @@ import { AuthModule } from '@app/auth';
 import { appInitializer } from '@app/core'
 import { AuthService } from '@app/core/services'
 import { ErrorInterceptor, JwtInterceptor } from '@app/core/interceptors';
-import { DashboardModule } from './dashboard/dashboard.module'
+import { DashboardModule } from './dashboard/dashboard.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 
 @NgModule({
   declarations: [AppComponent],
@@ -19,7 +20,8 @@ import { DashboardModule } from './dashboard/dashboard.module'
     DashboardModule,
     BrowserModule,
     SharedModule,
-    AuthModule
+    AuthModule,
+    BrowserAnimationsModule
   ],
   providers: [
     { provide: APP_INITIALIZER, useFactory: appInitializer, multi: true, deps: [AuthService] },
