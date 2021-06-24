@@ -9,17 +9,17 @@ import { AuthModule } from '@app/auth';
 import { appInitializer } from '@app/core'
 import { AuthService } from '@app/core/services'
 import { ErrorInterceptor, JwtInterceptor } from '@app/core/interceptors';
-import { HomeModule } from './home/home.module'
+import { DashboardModule } from './dashboard/dashboard.module'
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
     HttpClientModule,
     AppRoutingModule,
+    DashboardModule,
     BrowserModule,
     SharedModule,
-    AuthModule,
-    HomeModule
+    AuthModule
   ],
   providers: [
     { provide: APP_INITIALIZER, useFactory: appInitializer, multi: true, deps: [AuthService] },
