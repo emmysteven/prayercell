@@ -10,7 +10,8 @@ import { appInitializer } from '@app/core'
 import { AuthService } from '@app/core/services'
 import { ErrorInterceptor, JwtInterceptor } from '@app/core/interceptors';
 import { DashboardModule } from './dashboard/dashboard.module';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MaterialModule } from './material.module'
 
 @NgModule({
   declarations: [AppComponent],
@@ -21,7 +22,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
     BrowserModule,
     SharedModule,
     AuthModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MaterialModule
   ],
   providers: [
     { provide: APP_INITIALIZER, useFactory: appInitializer, multi: true, deps: [AuthService] },
