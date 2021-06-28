@@ -2,7 +2,7 @@ import { AuthService } from '@app/core/services'
 
 export function appInitializer(authService: AuthService) {
   let user = JSON.parse(<string>localStorage.getItem('user') || '{}');
-  
+
   return () => new Promise(resolve => {
     if (authService.isLoggedIn()){
       return resolve(true);
