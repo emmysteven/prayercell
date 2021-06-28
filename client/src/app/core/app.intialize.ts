@@ -6,7 +6,9 @@ export function appInitializer(authService: AuthService) {
     // attempt to refresh token on app start up to auto authenticate
     authService
       .refreshToken(user.refreshToken)
-      .subscribe()
+      .subscribe((data) => {
+        localStorage.setItem('user', JSON.stringify(data));
+      })
       .add(resolve);
   });
 }
