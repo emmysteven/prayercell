@@ -35,7 +35,7 @@ import {MemberService} from '@app/core/services/member.service'
             </button>
             <ul class="dropdown-menu">
               <li>
-                <a class="btn btn-light" routerLink="'/update/' + member.id">
+                <a class="btn btn-light" [routerLink]="'/update/' + member.id">
                   <img src="../../../assets/update.svg" alt="update" />
                 </a>
               </li>
@@ -45,7 +45,7 @@ import {MemberService} from '@app/core/services/member.service'
                 </button>
               </li>
               <li>
-                <a class="btn btn-light" routerLink="'/read/' + member.id">
+                <a class="btn btn-light" [routerLink]="'/read/' + member.id">
                   <img src="../../../assets/view.svg" alt="view" />
                 </a>
               </li>
