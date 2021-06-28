@@ -85,7 +85,6 @@ export class AuthService {
   }
 
   logout():void {
-    this.http.post<any>(`${BASE_URL}auth/revoke-token`, {}, httpOptions).subscribe();
     this.stopRefreshTokenTimer();
     localStorage.removeItem('user');
     this.userSubject.next({});
