@@ -29,7 +29,7 @@ import {MemberService} from '@app/core/services/member.service'
             <button
               class="btn btn-default shadow-none dropdown-toggle"
               type="button"
-              data-toggle="dropdown"
+              data-bs-toggle="dropdown"
             >
               <span class="caret"></span>
             </button>
@@ -41,7 +41,7 @@ import {MemberService} from '@app/core/services/member.service'
               </li>
               <li>
                 <button class="btn btn-light">
-                  btn-light<img src="../../../assets/delete.svg" alt="delete" />
+                  <img src="../../../assets/delete.svg" alt="delete" />
                 </button>
               </li>
               <li>
