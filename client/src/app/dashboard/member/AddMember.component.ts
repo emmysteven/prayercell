@@ -1,87 +1,152 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms'
+import { IError } from '@app/core/models/error'
+import { ActivatedRoute, Router } from '@angular/router'
+import { AlertService, MemberService } from '@app/core/services'
+import {first} from 'rxjs/operators'
+import { Util } from '@app/core/Utils'
+
 
 @Component({
   selector: 'app-create-member',
   template: `
     <div class="container">
-      <form class="form-block" method="POST">
-        <div class="form-group">
-          <label>Firstname:</label>
-          <input type="text" class="form-control capitalize" required />
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" autocomplete="off" class="form-block">
+        <div class="form-group mb-3">
+          <label for="firstName">Firstname:</label>
+          <input type="text" id="firstName" formControlName="firstName"
+                 class="form-control" [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }" />
+
+          <div *ngIf="submitted && f.firstName.errors" class="invalid-feedback">
+            <div *ngIf="f.firstName.errors.required">First Name is required</div>
+          </div>
         </div>
 
-        <div class="form-group">
-          <label>Lastname:</label>
-          <input type="text" class="form-control capitalize" required />
+        <div class="form-group mb-3">
+          <label for="lastName">Last Name</label>
+          <input type="text" id="lastName" formControlName="lastName" class="form-control"
+                 [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }" />
+
+          <div *ngIf="submitted && f.lastName.errors" class="invalid-feedback">
+            <div *ngIf="f.lastName.errors.required">Last Name is required</div>
+          </div>
         </div>
 
-        <div class="form-group">
-          <label>Email:</label>
-          <input type="email" class="form-control" required />
+        <div class="form-group mb-3">
+          <label for="email">Email</label>
+          <input type="text" id="email" formControlName="email" class="form-control"
+                 [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
+
+          <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+            <div *ngIf="f.email.errors.required">Email is required</div>
+          </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group mb-3">
           <label>Gender:</label>
           <br />
-          <select class="custom-select w-75">
-            <option value>Gender</option>
+          <select class="form-control w-75">
+            <option value>Select Gender</option>
             <option value="Male">Male</option>
             <option value="Female">Female</option>
           </select>
         </div>
 
-        <div class="form-group">
+        <div class="form-group mb-3">
           <label>Prayer Cell</label>
           <br />
-          <select v-model="fields.cell" class="custom-select w-75" required>
-            <!-- <option :value="defaultCell">{{ defaultCell }}</option> -->
+          <select v-model="fields.cell" class="form-control w-75" required>
+<!--            <option :value="defaultCell">{{ defaultCell }}</option>-->
             <option value>Select Cell</option>
-<!--            <option v-for="(value, index) in cells" :key="index">{{ value }}</option>-->
+            <option *ngFor="let cell of cells">{{ cell }}</option>
           </select>
         </div>
 
-        <div class="form-group">
-          <label>Month and Day of Birth:</label>
+        <div class="form-group mb-3">
+          <label>Date of Birth:</label>
           <br />
-          <select v-model="fields.day" class="custom-select w-25" required>
-            <option value>Select</option>
-<!--            <option v-for="(value, index) in days" :key="index">{{ value }}</option>-->
-          </select>
-
-          <select v-model="fields.month" class="ml-3 custom-select w-25" required>
-            <option value>Select</option>
-<!--            <option v-for="(value, index) in months" :key="index">{{ value }}</option>-->
-          </select>
+          <input type="date" class="form-control w-75">
         </div>
 
-        <!-- <div class="form-group" v-if="fields.gender == 'Male'"> -->
-<!--        <div class="form-group">-->
-<!--          <label>Month and Day of Marriage:</label>-->
-<!--          <br />-->
-<!--          <select v-model="fields.day1" class="custom-select w-25">-->
-<!--            <option value>Select</option>-->
-<!--            <option v-for="(value, index) in days" :key="index">{{ value }}</option>-->
-<!--          </select>-->
+        <div class="form-group mb-3">
+          <label>Marriage Anniversary</label>
+          <br />
+          <input type="date" class="form-control w-75">
+        </div>
 
-<!--          <select v-model="fields.month1" class="ml-3 custom-select w-25">-->
-<!--            <option value>Select</option>-->
-<!--            <option v-for="(value, index) in months" :key="index">{{ value }}</option>-->
-<!--          </select>-->
-<!--        </div>-->
-
-        <button class="btn btn-primary mr-2">Submit</button>
-        <a class="btn btn-secondary" routerLink="/admin/home">Cancel</a>
+        <button class="btn btn-primary me-2">Submit</button>
+        <a class="btn btn-secondary" routerLink="/member">Cancel</a>
       </form>
     </div>
   `,
-  styles: [
-  ]
+  styles: [`
+    .container {
+      margin-top: 2.5rem;
+      width: 50%;
+    }
+
+    .w-25 {
+      width: 5.4rem !important;
+    }
+  `]
 })
-export class CreateMemberComponent implements OnInit {
+export class addMemberComponent implements OnInit {
 
-  constructor() { }
+  form: FormGroup = new FormGroup({});
+  loading = false;
+  submitted = false;
 
-  ngOnInit(): void {
+  cells: any = Util.cells();
+
+  Error: IError = {
+    error: ''
   }
 
+  constructor(
+    private formBuilder: FormBuilder,
+    private route: ActivatedRoute,
+    private router: Router,
+    private memberService: MemberService,
+    private alertService: AlertService
+  ) { }
+
+  ngOnInit(): void {
+    this.form = this.formBuilder.group({
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      email: ['', Validators.required],
+      phoneNumber: ['', Validators.required],
+      password: ['', [Validators.required, Validators.minLength(8)]]
+    });
+  }
+
+  // convenience getter for easy access to form fields
+  get f() { return this.form.controls; }
+
+  onSubmit() {
+    this.submitted = true;
+
+    // reset alerts on submit
+    this.alertService.clear();
+
+    // stop here if form is invalid
+    if (this.form.invalid) {
+      return;
+    }
+
+    this.loading = true;
+
+    this.memberService.add(this.form.value).pipe(first())
+      .subscribe(
+        data => {
+          this.alertService.success('Registration successful', { keepAfterRouteChange: true });
+          this.router.navigate(['../login'], { relativeTo: this.route });
+          console.log(data);
+        },
+        (error) => {
+          this.alertService.error(error.message);
+          console.log(error.message);
+          this.loading = false;
+        });
+  }
 }
