@@ -7,10 +7,13 @@ import { ReadAdminComponent } from './admin/read-admin.component';
 import { CreateAdminComponent } from './admin/create-admin.component';
 import { UpdateAdminComponent } from './admin/update-admin.component';
 import { DeleteAdminComponent } from './admin/delete-admin.component';
-import { DeleteMemberComponent } from '@app/dashboard/member';
-import { UpdateMemberComponent } from '@app/dashboard/member';
-import { ListMemberComponent } from '@app/dashboard/member';
-import { addMemberComponent } from '@app/dashboard/member';
+import {
+  addMemberComponent,
+  ListMemberComponent,
+  UpdateMemberComponent,
+  DeleteMemberComponent,
+} from '@app/dashboard/member';
+
 import { LayoutComponent } from './layout.component';
 
 
