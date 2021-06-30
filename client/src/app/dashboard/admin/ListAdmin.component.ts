@@ -13,7 +13,7 @@ import { Observable } from 'rxjs'
   ]
 })
 
-export class ReadAdminComponent implements OnInit {
+export class ListAdminComponent implements OnInit {
   constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
