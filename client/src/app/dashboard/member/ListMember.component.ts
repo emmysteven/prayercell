@@ -5,7 +5,7 @@ import {MemberService} from '@app/core/services/member.service'
   selector: 'app-read-member',
   template: `
     <div class="search-control d-flex flex-row">
-      <a routerLink="/admin/add">
+      <a routerLink="/member/add">
         <img src="../../../assets/add.svg" class="add" alt="Add" />
       </a>
       <input class="search form-control" placeholder="Firstname or Lastname" />
@@ -103,7 +103,7 @@ import {MemberService} from '@app/core/services/member.service'
     `
   ]
 })
-export class ReadMemberComponent implements OnInit {
+export class ListMemberComponent implements OnInit {
 
   members: any;
 
