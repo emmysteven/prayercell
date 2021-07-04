@@ -37,6 +37,10 @@ public class Member extends EntityAudit<String> implements Serializable {
     @Size(max = 50)
     private String email;
 
+    @NotBlank
+    @Size(max = 11)
+    private String telephone;
+
     @NotNull
     @JsonFormat(pattern="dd-MM-yyyy")
     private LocalDate dob;
@@ -45,11 +49,19 @@ public class Member extends EntityAudit<String> implements Serializable {
     private  Integer age;
 
     // This allows for unit testing
-    public Member(Long id, String firstname, String lastname, String email, LocalDate dob) {
+    public Member(
+            Long id,
+            String firstname,
+            String lastname,
+            String email,
+            String telephone,
+            LocalDate dob
+    ) {
         this.id = id;
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
+        this.telephone = telephone;
         this.dob = dob;
     }
 
