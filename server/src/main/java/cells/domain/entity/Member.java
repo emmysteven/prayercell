@@ -1,6 +1,7 @@
 package cells.domain.entity;
 
 import cells.domain.entity.common.EntityAudit;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -37,6 +38,7 @@ public class Member extends EntityAudit<String> implements Serializable {
     private String email;
 
     @NotNull
+    @JsonFormat(pattern="dd-MM-yyyy")
     private LocalDate dob;
 
     @Transient
