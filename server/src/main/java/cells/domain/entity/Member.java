@@ -45,6 +45,9 @@ public class Member extends EntityAudit<String> implements Serializable {
     @JsonFormat(pattern="dd-MM-yyyy")
     private LocalDate dob;
 
+    @JsonFormat(pattern="dd-MM-yyyy")
+    private LocalDate marriageDate;
+
     @Transient
     private  Integer age;
 
@@ -55,7 +58,8 @@ public class Member extends EntityAudit<String> implements Serializable {
             String lastname,
             String email,
             String telephone,
-            LocalDate dob
+            LocalDate dob,
+            LocalDate marriageDate
     ) {
         this.id = id;
         this.firstname = firstname;
@@ -63,6 +67,7 @@ public class Member extends EntityAudit<String> implements Serializable {
         this.email = email;
         this.telephone = telephone;
         this.dob = dob;
+        this.marriageDate = marriageDate;
     }
 
     public Integer getAge() {
