@@ -1,6 +1,7 @@
 package cells.domain.entity;
 
 import cells.domain.entity.common.EntityAudit;
+import cells.domain.enums.Gender;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -42,10 +44,22 @@ public class Member extends EntityAudit<String> implements Serializable {
     private String telephone;
 
     @NotNull
-    @JsonFormat(pattern="dd-MM-yyyy")
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
+
+//    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+//    @JoinColumn(name = "cell_id")
+//    private Cell cell;
+    @NotBlank
+    @Size(max = 20)
+    private String cell;
+
+    @Past
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate dob;
 
-    @JsonFormat(pattern="dd-MM-yyyy")
+    @Past
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate marriageDate;
 
     @Transient
@@ -58,6 +72,8 @@ public class Member extends EntityAudit<String> implements Serializable {
             String lastname,
             String email,
             String telephone,
+            Gender gender,
+            String cell,
             LocalDate dob,
             LocalDate marriageDate
     ) {
@@ -66,6 +82,8 @@ public class Member extends EntityAudit<String> implements Serializable {
         this.lastname = lastname;
         this.email = email;
         this.telephone = telephone;
+        this.gender = gender;
+        this.cell = cell;
         this.dob = dob;
         this.marriageDate = marriageDate;
     }
