@@ -14,21 +14,21 @@ import { Util } from '@app/core/Utils'
       <form [formGroup]="form" (ngSubmit)="onSubmit()" autocomplete="off" class="form-block">
         <div class="form-group mb-3">
           <label for="firstName">Firstname:</label>
-          <input type="text" id="firstName" formControlName="firstName"
-                 class="form-control" [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }" />
+          <input type="text" id="firstName" formControlName="firstname"
+                 class="form-control" [ngClass]="{ 'is-invalid': submitted && f.firstname.errors }" />
 
-          <div *ngIf="submitted && f.firstName.errors" class="invalid-feedback">
-            <div *ngIf="f.firstName.errors.required">First Name is required</div>
+          <div *ngIf="submitted && f.firstname.errors" class="invalid-feedback">
+            <div *ngIf="f.firstname.errors.required">First Name is required</div>
           </div>
         </div>
 
         <div class="form-group mb-3">
           <label for="lastName">Last Name</label>
-          <input type="text" id="lastName" formControlName="lastName" class="form-control"
-                 [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }" />
+          <input type="text" id="lastName" formControlName="lastname" class="form-control"
+                 [ngClass]="{ 'is-invalid': submitted && f.lastname.errors }" />
 
-          <div *ngIf="submitted && f.lastName.errors" class="invalid-feedback">
-            <div *ngIf="f.lastName.errors.required">Last Name is required</div>
+          <div *ngIf="submitted && f.lastname.errors" class="invalid-feedback">
+            <div *ngIf="f.lastname.errors.required">Last Name is required</div>
           </div>
         </div>
 
@@ -43,9 +43,19 @@ import { Util } from '@app/core/Utils'
         </div>
 
         <div class="form-group mb-3">
+          <label for="telephone">Phone Number</label>
+          <input type="text" id="telephone" formControlName="telephone" class="form-control"
+                 [ngClass]="{ 'is-invalid': submitted && f.telephone.errors }" />
+
+          <div *ngIf="submitted && f.telephone.errors" class="invalid-feedback">
+            <div *ngIf="f.telephone.errors.required">Phone Number is required</div>
+          </div>
+        </div>
+
+        <div class="form-group mb-3">
           <label>Gender:</label>
           <br />
-          <select class="form-control w-75">
+          <select formControlName="gender" class="form-control w-75">
             <option value>Select Gender</option>
             <option value="Male">Male</option>
             <option value="Female">Female</option>
@@ -55,23 +65,26 @@ import { Util } from '@app/core/Utils'
         <div class="form-group mb-3">
           <label>Prayer Cell</label>
           <br />
-          <select v-model="fields.cell" class="form-control w-75" required>
-<!--            <option :value="defaultCell">{{ defaultCell }}</option>-->
-            <option value>Select Cell</option>
+          <select formControlName="cell" class="form-control w-75" required>
+            <option value>Prayer Cell</option>
             <option *ngFor="let cell of cells">{{ cell }}</option>
           </select>
         </div>
 
         <div class="form-group mb-3">
-          <label>Date of Birth:</label>
+          <label for="dob">Date of Birth:</label>
           <br />
-          <input type="date" class="form-control w-75">
+          <input type="text" formControlName="dob" class="form-control w-75" placeholder="dd-mm-yyyy">
+
+          <div *ngIf="submitted && f.dob.errors" class="invalid-feedback">
+            <div *ngIf="f.dob.errors.required">Date of Birth is required</div>
+          </div>
         </div>
 
         <div class="form-group mb-3">
           <label>Marriage Anniversary</label>
           <br />
-          <input type="date" class="form-control w-75">
+          <input type="text" formControlName="marriageDate" class="form-control w-75" placeholder="dd-mm-yyyy">
         </div>
 
         <button class="btn btn-primary me-2">Submit</button>
@@ -112,11 +125,14 @@ export class addMemberComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
+      firstname: ['', Validators.required],
+      lastname: ['', Validators.required],
+      gender: ['', Validators.required],
+      cell: ['', Validators.required],
       email: ['', Validators.required],
-      phoneNumber: ['', Validators.required],
-      password: ['', [Validators.required, Validators.minLength(8)]]
+      telephone: ['', Validators.required],
+      dob: [''],
+      marriageDate: [''],
     });
   }
 
@@ -131,6 +147,7 @@ export class addMemberComponent implements OnInit {
 
     // stop here if form is invalid
     if (this.form.invalid) {
+      console.log(this.form.invalid)
       return;
     }
 
@@ -139,8 +156,8 @@ export class addMemberComponent implements OnInit {
     this.memberService.add(this.form.value).pipe(first())
       .subscribe(
         data => {
-          this.alertService.success('Registration successful', { keepAfterRouteChange: true });
-          this.router.navigate(['../login'], { relativeTo: this.route });
+          this.alertService.success('Member added successfully', { keepAfterRouteChange: true });
+          this.router.navigate(['../member'], { relativeTo: this.route });
           console.log(data);
         },
         (error) => {
