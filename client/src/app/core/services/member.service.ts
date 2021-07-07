@@ -23,4 +23,8 @@ export class MemberService {
     return this.http.post(`${BASE_URL}api/member`, member);
   }
 
+  update(member: User) {
+    return this.http.put(`${BASE_URL}api/member`, member);
+  }
+
 }
