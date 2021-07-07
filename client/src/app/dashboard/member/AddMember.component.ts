@@ -157,7 +157,7 @@ export class addMemberComponent implements OnInit {
       .subscribe(
         data => {
           this.alertService.success('Member added successfully', { keepAfterRouteChange: true });
-          this.router.navigate(['../member'], { relativeTo: this.route });
+          this.router.navigate(['./member']);
           console.log(data);
         },
         (error) => {
