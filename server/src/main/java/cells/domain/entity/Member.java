@@ -56,7 +56,7 @@ public class Member extends EntityAudit<String> implements Serializable {
 
     @Past
     @JsonFormat(pattern = "dd-MM-yyyy")
-    private LocalDate dob;
+    private LocalDate birthDate;
 
     @Past
     @JsonFormat(pattern = "dd-MM-yyyy")
@@ -74,7 +74,7 @@ public class Member extends EntityAudit<String> implements Serializable {
             String telephone,
             Gender gender,
             String cell,
-            LocalDate dob,
+            LocalDate birthDate,
             LocalDate marriageDate
     ) {
         this.id = id;
@@ -84,12 +84,12 @@ public class Member extends EntityAudit<String> implements Serializable {
         this.telephone = telephone;
         this.gender = gender;
         this.cell = cell;
-        this.dob = dob;
+        this.birthDate = birthDate;
         this.marriageDate = marriageDate;
     }
 
     public Integer getAge() {
-        return Period.between(this.dob, LocalDate.now()).getYears();
+        return Period.between(this.birthDate, LocalDate.now()).getYears();
     }
 }
 
