@@ -23,7 +23,7 @@ import {MemberService} from '@app/core/services/member.service'
       <tr *ngFor="let member of members">
         <td>{{ member.firstname }}</td>
         <td>{{ member.lastname }}</td>
-        <td>{{ member.dob }}</td>
+        <td>{{ member.birthDate }}</td>
         <td>
           <div class="dropdown">
             <button
