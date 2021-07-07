@@ -72,12 +72,12 @@ import { Util } from '@app/core/Utils'
         </div>
 
         <div class="form-group mb-3">
-          <label for="dob">Date of Birth:</label>
+          <label for="birthDate">Date of Birth:</label>
           <br />
-          <input type="text" formControlName="dob" class="form-control w-75" placeholder="dd-mm-yyyy">
+          <input type="text" formControlName="birthDate" class="form-control w-75" placeholder="dd-mm-yyyy">
 
-          <div *ngIf="submitted && f.dob.errors" class="invalid-feedback">
-            <div *ngIf="f.dob.errors.required">Date of Birth is required</div>
+          <div *ngIf="submitted && f.birthDate.errors" class="invalid-feedback">
+            <div *ngIf="f.birthDate.errors.required">Date of Birth is required</div>
           </div>
         </div>
 
@@ -131,7 +131,7 @@ export class addMemberComponent implements OnInit {
       cell: ['', Validators.required],
       email: ['', Validators.required],
       telephone: ['', Validators.required],
-      dob: [''],
+      birthDate: [''],
       marriageDate: [''],
     });
   }
