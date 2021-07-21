@@ -19,6 +19,10 @@ export class MemberService {
     return this.http.get(`${BASE_URL}api/member`)
   }
 
+  getById(id: String) {
+    return this.http.get(`${BASE_URL}api/member/${id}`)
+  }
+
   add(member: User) {
     return this.http.post(`${BASE_URL}api/member`, member);
   }
