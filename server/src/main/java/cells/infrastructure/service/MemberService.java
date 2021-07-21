@@ -21,7 +21,7 @@ public class MemberService {
         this.repository = repository;
     }
 
-    @Cacheable(cacheNames = "members")
+//    @Cacheable(cacheNames = "members")
     public List<Member> getAll(){
         return repository.findAll();
     }
@@ -35,9 +35,14 @@ public class MemberService {
 
     public Member add(Member member) {
         Optional<Member> studentOptional = repository.findByEmail(member.getEmail());
+        Optional<Member> telephone = repository.findByTelephone(member.getTelephone());
         if (studentOptional.isPresent()){
             throw new IllegalStateException("email already taken");
         }
+        else if (telephone.isPresent()){
+            throw new IllegalStateException("telephone already taken");
+        }
+        log.info(studentOptional.toString());
         return repository.save(member);
     }
 
