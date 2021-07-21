@@ -19,7 +19,7 @@ export class MemberService {
     return this.http.get(`${BASE_URL}api/member`)
   }
 
-  getById(id: String) {
+  getById(id: string) {
     return this.http.get(`${BASE_URL}api/member/${id}`)
   }
 
@@ -27,7 +27,8 @@ export class MemberService {
     return this.http.post(`${BASE_URL}api/member`, member);
   }
 
-  update(member: User) {
+  update(id: string, member: User) {
+    member.id = id
     return this.http.put(`${BASE_URL}api/member`, member);
   }
 
