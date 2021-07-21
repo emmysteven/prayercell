@@ -102,9 +102,11 @@ import {first} from 'rxjs/operators'
     }
   `]
 })
-export class UpdateMemberComponent implements OnInit {
+export class AddEditMemberComponent implements OnInit {
 
   form: FormGroup = new FormGroup({});
+  id: string = '';
+  isAddMode: boolean = false;
   loading = false;
   submitted = false;
 
@@ -124,6 +126,9 @@ export class UpdateMemberComponent implements OnInit {
 
   ngOnInit(): void {
 
+    this.id = this.route.snapshot.params['id'];
+    this.isAddMode = !this.id;
+
     this.form = this.formBuilder.group({
       firstname: ['', Validators.required],
       lastname: ['', Validators.required],
@@ -135,9 +140,11 @@ export class UpdateMemberComponent implements OnInit {
       marriageDate: [''],
     });
 
-    this.memberService.getById(this.route.snapshot.params.id)
-      .pipe(first())
-      .subscribe(result => this.form.patchValue(result));
+    if (!this.isAddMode){
+      this.memberService.getById(this.id)
+        .pipe(first())
+        .subscribe(result => this.form.patchValue(result));
+    }
   }
 
   // convenience getter for easy access to form fields
@@ -156,7 +163,29 @@ export class UpdateMemberComponent implements OnInit {
     }
 
     this.loading = true;
+    if (this.isAddMode) {
+      this.addMember();
+    } else {
+      this.editMember();
+    }
+  }
 
+  private addMember() {
+    this.memberService.add(this.form.value).pipe(first())
+      .subscribe(
+        data => {
+          this.alertService.success('Member added', { keepAfterRouteChange: true });
+          this.router.navigate(['./member']);
+          console.log(data);
+        },
+        (error) => {
+          this.alertService.error(error.message);
+          console.log(error.message);
+          this.loading = false;
+        });
+  }
+
+  private editMember() {
     this.memberService.update(this.form.value).pipe(first())
       .subscribe(
         data => {
