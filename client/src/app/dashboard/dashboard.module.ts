@@ -11,9 +11,8 @@ import {
 } from '@app/dashboard/admin';
 
 import {
-  addMemberComponent,
   ListMemberComponent,
-  UpdateMemberComponent,
+  AddEditMemberComponent,
   DeleteMemberComponent
 } from '@app/dashboard/member';
 
@@ -26,9 +25,8 @@ import { LayoutComponent } from './layout.component';
     ListAdminComponent,
     UpdateAdminComponent,
     DeleteAdminComponent,
-    addMemberComponent,
     ListMemberComponent,
-    UpdateMemberComponent,
+    AddEditMemberComponent,
     DeleteMemberComponent,
     LayoutComponent
   ],
