@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {MemberService} from '@app/core/services/member.service'
+import {first} from 'rxjs/operators'
+import {User} from '@app/core/models/user'
 
 @Component({
   selector: 'app-read-member',
@@ -40,8 +42,14 @@ import {MemberService} from '@app/core/services/member.service'
                 </a>
               </li>
               <li>
-                <button class="btn btn-light">
-                  <img src="../../../assets/delete.svg" alt="delete" />
+<!--                <button class="btn btn-light">-->
+<!--                  <img src="../../../assets/delete.svg" alt="delete" />-->
+<!--                </button>-->
+                <button (click)="deleteMember(member.id)" class="btn btn-light" [disabled]="member.isDeleting">
+                  <span *ngIf="member.isDeleting" class="spinner-border spinner-border-sm"></span>
+                  <span *ngIf="!member.isDeleting">
+                    <img src="../../../assets/delete.svg" alt="delete" />
+                  </span>
                 </button>
               </li>
               <li>
@@ -114,8 +122,7 @@ export class ListMemberComponent implements OnInit {
   }
 
   fetchMembers(): void {
-    this.memberService.getAll()
-      .subscribe(
+    this.memberService.getAll().subscribe(
         data => {
          this.members = data;
           console.log(data);
@@ -124,6 +131,15 @@ export class ListMemberComponent implements OnInit {
           console.log(error);
         });
 
+  }
+
+  deleteMember(id: any) {
+    const member = this.members.find((x: any) => x.id === id);
+    if (!member) return;
+    member.isDeleting = true;
+    this.memberService.delete(id)
+      .pipe(first())
+      .subscribe(() => this.members = this.members.filter((x: any) => x.id !== id));
   }
 
 }
