@@ -86,7 +86,7 @@ import {first} from 'rxjs/operators'
           <input type="text" formControlName="marriageDate" class="form-control w-75" placeholder="dd-mm-yyyy">
         </div>
 
-        <button class="btn btn-primary me-2">Update</button>
+        <button class="btn btn-primary me-2">Submit</button>
         <a class="btn btn-secondary" routerLink="/member">Cancel</a>
       </form>
     </div>
@@ -140,6 +140,7 @@ export class AddEditMemberComponent implements OnInit {
       marriageDate: [''],
     });
 
+    console.log("Edit Mode is " + this.isAddMode)
     if (!this.isAddMode){
       this.memberService.getById(this.id)
         .pipe(first())
@@ -186,6 +187,7 @@ export class AddEditMemberComponent implements OnInit {
   }
 
   private editMember() {
+    console.log('calling edit member');
     this.memberService.update(this.form.value).pipe(first())
       .subscribe(
         data => {
