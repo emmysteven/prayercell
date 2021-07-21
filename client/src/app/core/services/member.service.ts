@@ -32,4 +32,8 @@ export class MemberService {
     return this.http.put(`${BASE_URL}api/member`, member);
   }
 
+  delete(id: string) {
+    return this.http.delete(`${BASE_URL}api/member/${id}`);
+  }
+
 }
