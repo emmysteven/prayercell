@@ -34,15 +34,15 @@ public class MemberService {
     }
 
     public Member add(Member member) {
-        Optional<Member> studentOptional = repository.findByEmail(member.getEmail());
+        Optional<Member> email = repository.findByEmail(member.getEmail());
         Optional<Member> telephone = repository.findByTelephone(member.getTelephone());
-        if (studentOptional.isPresent()){
+        if (email.isPresent()){
             throw new IllegalStateException("email already taken");
         }
         else if (telephone.isPresent()){
             throw new IllegalStateException("telephone already taken");
         }
-        log.info(studentOptional.toString());
+        log.info(email.toString());
         return repository.save(member);
     }
 
