@@ -35,8 +35,8 @@ import {MemberService} from '@app/core/services/member.service'
             </button>
             <ul class="dropdown-menu">
               <li>
-                <a class="btn btn-light" routerLink="/member/update/{{member.id}}">
-                  <img src="../../../assets/update.svg" alt="update" />
+                <a class="btn btn-light" routerLink="/member/edit/{{member.id}}">
+                  <img src="../../../assets/update.svg" alt="edit" />
                 </a>
               </li>
               <li>
