@@ -3,7 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { LayoutComponent } from '@app/dashboard/layout.component'
 import {
   addMemberComponent,
-  ListMemberComponent
+  ListMemberComponent,
+  UpdateMemberComponent
 } from '@app/dashboard/member'
 
 const routes: Routes = [
@@ -12,6 +13,7 @@ const routes: Routes = [
     children: [
       { path: 'member', component: ListMemberComponent },
       { path: 'member/add', component: addMemberComponent },
+      { path: 'member/update/:id', component: UpdateMemberComponent },
     ]
   }
 ];
