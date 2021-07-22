@@ -10,7 +10,7 @@ import { Component, OnInit } from '@angular/core';
   styles: [
   ]
 })
-export class UpdateAdminComponent implements OnInit {
+export class AddEditAdminComponent implements OnInit {
 
   constructor() { }
 
