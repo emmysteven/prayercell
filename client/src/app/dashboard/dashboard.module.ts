@@ -6,7 +6,7 @@ import { DashboardRoutingModule } from './dashboard-routing.module';
 import {
   AddAdminComponent,
   ListAdminComponent,
-  UpdateAdminComponent,
+  AddEditAdminComponent,
   DeleteAdminComponent,
 } from '@app/dashboard/admin';
 
@@ -23,7 +23,7 @@ import { LayoutComponent } from './layout.component';
   declarations: [
     AddAdminComponent,
     ListAdminComponent,
-    UpdateAdminComponent,
+    AddEditAdminComponent,
     DeleteAdminComponent,
     ListMemberComponent,
     AddEditMemberComponent,
