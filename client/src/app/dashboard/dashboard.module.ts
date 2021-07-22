@@ -4,7 +4,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import {
-  AddAdminComponent,
   ListAdminComponent,
   AddEditAdminComponent,
   DeleteAdminComponent,
@@ -21,7 +20,6 @@ import { LayoutComponent } from './layout.component';
 
 @NgModule({
   declarations: [
-    AddAdminComponent,
     ListAdminComponent,
     AddEditAdminComponent,
     DeleteAdminComponent,
