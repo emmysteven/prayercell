@@ -5,11 +5,13 @@ import {
   ListMemberComponent,
   AddEditMemberComponent
 } from '@app/dashboard/member'
+import { ListAdminComponent } from '@app/dashboard/admin'
 
 const routes: Routes = [
   {
     path: '', component: LayoutComponent,
     children: [
+      { path: 'admin', component: ListAdminComponent },
       { path: 'member', component: ListMemberComponent },
       { path: 'member/add', component: AddEditMemberComponent },
       { path: 'member/edit/:id', component: AddEditMemberComponent },
