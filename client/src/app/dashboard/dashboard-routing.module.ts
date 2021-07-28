@@ -17,7 +17,7 @@ const routes: Routes = [
       { path: 'admin', component: ListAdminComponent },
       { path: 'admin/add', component: AddEditAdminComponent },
       { path: 'admin/edit/:id', component: AddEditAdminComponent },
-      
+
       { path: 'member', component: ListMemberComponent },
       { path: 'member/add', component: AddEditMemberComponent },
       { path: 'member/edit/:id', component: AddEditMemberComponent },
