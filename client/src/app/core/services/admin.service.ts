@@ -23,4 +23,8 @@ export class AdminService {
     return this.http.get(`${BASE_URL}api/admin/${id}`)
   }
 
+  add(admin: User) {
+    return this.http.post(`${BASE_URL}api/admin`, admin);
+  }
+
 }
