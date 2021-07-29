@@ -18,4 +18,9 @@ export class AdminService {
   getAll(): Observable<any> {
     return this.http.get(`${BASE_URL}api/admin`)
   }
+
+  getById(id: string) {
+    return this.http.get(`${BASE_URL}api/admin/${id}`)
+  }
+
 }
