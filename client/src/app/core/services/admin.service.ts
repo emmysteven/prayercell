@@ -27,4 +27,9 @@ export class AdminService {
     return this.http.post(`${BASE_URL}api/admin`, admin);
   }
 
+  update(id: string, admin: User) {
+    admin.id = id
+    return this.http.put(`${BASE_URL}api/admin`, admin);
+  }
+
 }
