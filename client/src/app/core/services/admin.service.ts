@@ -32,4 +32,8 @@ export class AdminService {
     return this.http.put(`${BASE_URL}api/admin`, admin);
   }
 
+  delete(id: string) {
+    return this.http.delete(`${BASE_URL}api/admin/${id}`);
+  }
+
 }
