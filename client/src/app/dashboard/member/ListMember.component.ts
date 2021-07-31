@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {MemberService} from '@app/core/services/member.service'
 import {first} from 'rxjs/operators'
-import {User} from '@app/core/models/user'
 
 @Component({
   selector: 'app-read-member',
