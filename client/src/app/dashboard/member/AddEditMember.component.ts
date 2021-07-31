@@ -140,7 +140,7 @@ export class AddEditMemberComponent implements OnInit {
       marriageDate: [''],
     });
 
-    console.log("Edit Mode is " + this.isAddMode)
+    console.log("Add Mode is " + this.isAddMode)
     if (!this.isAddMode){
       this.memberService.getById(this.id)
         .pipe(first())
@@ -187,8 +187,7 @@ export class AddEditMemberComponent implements OnInit {
   }
 
   private editMember() {
-    console.log('calling edit member');
-    this.memberService.update(this.form.value).pipe(first())
+    this.memberService.update(this.id, this.form.value).pipe(first())
       .subscribe(
         data => {
           this.alertService.success('Member Updated', { keepAfterRouteChange: true });
