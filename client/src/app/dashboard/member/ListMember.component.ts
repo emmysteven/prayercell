@@ -137,8 +137,7 @@ export class ListMemberComponent implements OnInit {
     const member = this.members.find((x: any) => x.id === id);
     if (!member) return;
     member.isDeleting = true;
-    this.memberService.delete(id)
-      .pipe(first())
+    this.memberService.delete(id).pipe(first())
       .subscribe(() => this.members = this.members.filter((x: any) => x.id !== id));
   }
 
