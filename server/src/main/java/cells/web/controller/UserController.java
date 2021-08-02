@@ -3,6 +3,8 @@ package cells.web.controller;
 import cells.application.exception.UpdatePasswordException;
 import cells.application.payload.request.UpdatePasswordRequest;
 import cells.application.payload.response.ApiResponse;
+import cells.domain.entity.Member;
+import cells.domain.entity.User;
 import cells.domain.event.AccountChangeEvent;
 import cells.domain.entity.CustomUserDetails;
 import cells.infrastructure.security.CurrentUser;
@@ -13,11 +15,13 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/user")
@@ -54,11 +58,13 @@ public class UserController {
      * Returns all admins in the system. Requires Admin access
      */
     @GetMapping("/admins")
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Returns the list of configured admins. Requires ADMIN Access")
-    public ResponseEntity getAllAdmins() {
+    public ResponseEntity<List<User>> getAllAdmins() {
         log.info("Inside secured resource with admin");
-        return ResponseEntity.ok("Hello. This is about admins");
+        List<User> users = userService.findAll();
+        return new ResponseEntity<>(users, HttpStatus.OK);
+//        return ResponseEntity.ok("Hello. This is about admins");
     }
 
     /**
