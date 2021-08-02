@@ -16,7 +16,7 @@ export class AdminService {
   constructor(private router: Router, private http: HttpClient) {}
 
   getAll(): Observable<any> {
-    return this.http.get(`${BASE_URL}api/admin`)
+    return this.http.get(`${BASE_URL}api/user/admins`)
   }
 
   getById(id: string) {
