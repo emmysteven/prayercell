@@ -27,7 +27,7 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
     implementation 'org.junit.jupiter:junit-jupiter:5.8.2'
     implementation 'org.mapstruct:mapstruct:1.5.2.Final'
-    implementation 'org.modelmapper:modelmapper:2.4.2'
+    implementation 'org.modelmapper:modelmapper:3.1.0'
     implementation 'org.springdoc:springdoc-openapi-ui:1.5.9'
     implementation 'freemarker:freemarker:2.3.9'
     runtimeOnly 'com.h2database:h2'
