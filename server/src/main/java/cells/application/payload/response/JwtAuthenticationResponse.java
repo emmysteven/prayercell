@@ -1,4 +1,4 @@
-package com.accolite.pru.health.AuthApp.model.payload;
+package cells.application.payload.response;
 
 public class JwtAuthenticationResponse {
 
