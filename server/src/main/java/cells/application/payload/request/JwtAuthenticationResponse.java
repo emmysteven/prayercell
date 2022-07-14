@@ -6,11 +6,8 @@ import lombok.*;
 public class JwtAuthenticationResponse {
 
     private String accessToken;
-
     private String refreshToken;
-
     private String tokenType;
-
     private Long expiryDuration;
 
     public JwtAuthenticationResponse(String accessToken, String refreshToken, Long expiryDuration) {
