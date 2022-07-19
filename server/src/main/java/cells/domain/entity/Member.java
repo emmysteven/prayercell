@@ -55,6 +55,7 @@ public class Member extends EntityAudit<String> implements Serializable {
     private String cell;
 
     @Past
+    @NotNull
     @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate birthDate;
 
