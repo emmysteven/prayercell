@@ -31,10 +31,8 @@ public abstract class EntityAudit<U> {
     protected Instant createdAt;
 
     @LastModifiedBy
-    @Column(nullable = false)
     protected U editedBy;
 
     @LastModifiedDate
-    @Column(nullable = false)
     protected Instant updatedAt;
 }
