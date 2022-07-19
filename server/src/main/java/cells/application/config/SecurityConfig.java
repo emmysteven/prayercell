@@ -6,24 +6,22 @@ import cells.infrastructure.service.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.BeanIds;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
 import java.util.List;
 
-
 /**
- * Created by emmysteven.
+ * Created by Emmy Steven.
  */
 
 @Configuration
@@ -43,7 +41,7 @@ import java.util.List;
         // public Poll createPoll() {}
         prePostEnabled = true
 )
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig {
 
     protected static final String[] ACTUATOR_WHITELIST = {
             "/actuator/**",
@@ -78,26 +76,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean(BeanIds.AUTHENTICATION_MANAGER)
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
     }
 
-    @Override
-    public void configure(WebSecurity webSecurity) {
-        webSecurity.ignoring().antMatchers(ACTUATOR_WHITELIST);
+    @Bean
+    public WebSecurityCustomizer securityCustomizer() {
+        return (web) -> web.ignoring().antMatchers(ACTUATOR_WHITELIST);
     }
 
-    @Override
-    public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-        authenticationManagerBuilder
-                .userDetailsService(customUserDetailsService)
-                .passwordEncoder(passwordEncoder());
-    }
 
-    @Override
-    protected void configure(HttpSecurity httpSecurity) throws Exception {
+    @Bean
+    protected SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
 
         httpSecurity.cors().configurationSource(request -> {
             var config = new CorsConfiguration();
@@ -108,15 +99,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             return config;
         })
                 .and().cors().and().csrf().disable()
-                // dont authenticate this particular request
+                // don't authenticate this particular request
                 .authorizeRequests()
                 .antMatchers("/auth/**").permitAll()
                 .antMatchers(SWAGGER_WHITELIST).permitAll()
                 .antMatchers(ACTUATOR_WHITELIST).permitAll()
                 // all other requests need to be authenticated
                 .anyRequest().authenticated()
-                // make sure we use stateless session; session won't be used to
-                // store user's state.
+                // make sure we use stateless session; session won't be used to store user's state.
                 .and().exceptionHandling()
                 .authenticationEntryPoint(jwtAuthEntryPoint)
                 .and().sessionManagement()
@@ -124,6 +114,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         // Add custom JWT security filter to validate the tokens with every request
         httpSecurity.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+        return httpSecurity.build();
 
     }
 }
