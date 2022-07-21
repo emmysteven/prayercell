@@ -13,7 +13,7 @@ import org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean;
 import java.util.Properties;
 
 @Configuration
-@PropertySource("classpath:application.properties")
+@PropertySource("classpath:application.yml")
 @EnableAsync
 public class MailConfig {
 
