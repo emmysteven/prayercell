@@ -1,0 +1,46 @@
+spring:
+    profiles:
+        active: prod
+    jackson:
+        time-zone: UTC
+        serialization:
+            WRITE_DATES_AS_TIMESTAMPS: 'false'
+    application:
+        name: prayercell
+    thymeleaf:
+        cache: 'false'
+    main:
+        banner-mode: 'off'
+    devtools:
+        restart:
+            enabled: 'true'
+        livereload:
+            enabled: 'true'
+
+    cache:
+        type: redis
+        redis:
+            time-to-live: '600000'
+            cache-null-values: 'false'
+            use-key-prefix: 'false'
+
+    servlet:
+        multipart:
+            max-request-size: 1MB
+            max-file-size: 1MB
+
+    server:
+        compression:
+            enabled: 'true'
+        port: 3000
+        error:
+            include-message: always
+
+logging:
+    level:
+        hibernate: ERROR
+        cells: INFO
+        root: WARN
+    pattern:
+        console: '"%date %thread %green(%level) [%cyan(%logger{10}):%magenta(%line)] %red(%method)
+      | %msg%n"'
