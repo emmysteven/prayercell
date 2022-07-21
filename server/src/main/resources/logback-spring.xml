@@ -1,5 +1,5 @@
 <configuration scan="true" scanPeriod="30 seconds">
-    <property resource="application.properties" />
+    <property resource="application.yml" />
 
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
@@ -35,6 +35,6 @@
     </appender>
     <root level="info">
         <appender-ref ref="gelf_seq"/>
-        <appender-ref ref="console"/>
+        <!--<appender-ref ref="console"/>-->
     </root>
 </configuration>
