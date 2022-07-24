@@ -47,7 +47,7 @@ public class AuthController {
      */
     @Operation(summary = "Checks if the given email is in use")
     @GetMapping("/check_email")
-    public ResponseEntity checkEmailInUse(
+    public ResponseEntity<?> checkEmailInUse(
             @Parameter(description = "Email id to check against")
             @RequestParam("email") String email
     ) {
@@ -60,7 +60,7 @@ public class AuthController {
      */
     @Operation(summary = "Checks if the given username is in use")
     @GetMapping("/check_username")
-    public ResponseEntity checkUsernameInUse(
+    public ResponseEntity<?> checkUsernameInUse(
             @Parameter(description = "Username to check against")
             @RequestParam("username") String username
     ) {
@@ -87,7 +87,7 @@ public class AuthController {
      */
     @PostMapping("/signup")
     @Operation(summary = "Registers the user and publishes an event to generate the email verification")
-    public ResponseEntity registerUser(
+    public ResponseEntity<?> registerUser(
             @Parameter(description = "The RegistrationRequest payload")
             @Valid @RequestBody SignupRequest signupRequest
     ) {
@@ -116,7 +116,7 @@ public class AuthController {
     @PostMapping("/password/resetlink")
     @Operation(summary = "Receive the reset link request and publish event to send mail containing the password " +
             "reset link")
-    public ResponseEntity resetLink(
+    public ResponseEntity<?> resetLink(
             @Parameter(description = "The PasswordResetLinkRequest payload")
             @Valid @RequestBody PasswordResetLinkRequest passwordResetLinkRequest
     ) {
@@ -144,7 +144,7 @@ public class AuthController {
     @PostMapping("/password/reset")
     @Operation(summary = "Reset the password after verification and publish an event to send the acknowledgement " +
             "email")
-    public ResponseEntity resetPassword(
+    public ResponseEntity<?> resetPassword(
             @Parameter(description = "The PasswordResetRequest payload")
             @Valid @RequestBody PasswordResetRequest passwordResetRequest
     ) {
@@ -167,7 +167,7 @@ public class AuthController {
      */
     @GetMapping("/verify_email")
     @Operation(summary = "Confirms the email verification token that has been generated for the user during registration")
-    public ResponseEntity confirmRegistration(
+    public ResponseEntity<?> confirmRegistration(
             @Parameter(description = "the token that was sent to the user email")
             @RequestParam("token") String token
     ) {
@@ -191,7 +191,7 @@ public class AuthController {
             "assume that the user would always click on the last re-verification email and " +
             "any attempts at generating new token from past (possibly archived/deleted)" +
             "tokens should fail and report an exception. ")
-    public ResponseEntity resendRegistrationToken(
+    public ResponseEntity<?> resendRegistrationToken(
             @Parameter(description = "the initial token that was sent to the u ser email after registration")
             @RequestParam("token") String existingToken
     ) {
@@ -230,7 +230,7 @@ public class AuthController {
     @PostMapping("/refresh_token")
     @Operation(summary = "Refresh the expired jwt authentication by issuing a token refresh request and returns the" +
             "updated response tokens")
-    public ResponseEntity refreshJwtToken(
+    public ResponseEntity<?> refreshJwtToken(
             @Parameter(description = "The TokenRefreshRequest payload")
             @Valid @RequestBody TokenRefreshRequest tokenRefreshRequest
     ) {
