@@ -1,11 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import {MemberService} from '@app/core/services/member.service'
 import {first} from 'rxjs/operators'
+import {ModalService} from '@app/core/services'
 
 @Component({
   selector: 'app-read-member',
   template: `
     <div class="search-control d-flex flex-row">
+      <app-modal id="custom-modal" style="display: none">
+        <h1>Are you sure you want to delete <br />"Test Dialog"?</h1>
+        <button (click)="closeModal('custom-modal');">Close</button>
+      </app-modal>
       <a routerLink="/member/add">
         <img src="../../../assets/add.svg" class="add" alt="Add" />
       </a>
@@ -53,8 +58,10 @@ import {first} from 'rxjs/operators'
               </li>
               <li>
                 <a class="btn btn-light" routerLink="/read/{{member.id}}">
-                  <img src="../../../assets/view.svg" alt="view" />
+                  <!--<img src="../../../assets/view.svg" alt="view" />-->
+                  <img src="../../../assets/view.svg" alt="view" (click)="openModal('custom-modal')" />
                 </a>
+
               </li>
             </ul>
           </div>
@@ -104,6 +111,10 @@ import {first} from 'rxjs/operators'
       height: 18px;
     }
 
+    h1 {
+      text-align: center;
+    }
+
     /* .table th:nth-child(4) {
       text-align: center;
     } */
@@ -113,11 +124,21 @@ import {first} from 'rxjs/operators'
 export class ListMemberComponent implements OnInit {
 
   members: any;
+  bodyText: string = '';
 
-  constructor(private memberService: MemberService) { }
+  constructor( private memberService: MemberService, private modalService: ModalService) { }
 
   ngOnInit(): void {
+    this.bodyText = 'This text can be updated in modal 1';
     this.fetchMembers();
+  }
+
+  openModal(id: string) {
+    this.modalService.open(id);
+  }
+
+  closeModal(id: string) {
+    this.modalService.close(id);
   }
 
   fetchMembers(): void {
