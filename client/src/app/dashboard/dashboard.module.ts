@@ -16,6 +16,7 @@ import {
 } from '@app/dashboard/member';
 
 import { LayoutComponent } from './layout.component';
+import { SharedModule } from '@app/shared'
 
 
 @NgModule({
@@ -31,7 +32,8 @@ import { LayoutComponent } from './layout.component';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    DashboardRoutingModule
+    DashboardRoutingModule,
+    SharedModule
   ]
 })
 export class DashboardModule { }
