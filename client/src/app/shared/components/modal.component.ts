@@ -4,6 +4,7 @@ import { ModalService } from '@app/core/services'
 
 @Component({
   selector: 'app-modal',
+  encapsulation: ViewEncapsulation.None,
   template: `
     <div class="app-modal">
       <div class="app-modal-body">
@@ -19,7 +20,7 @@ import { ModalService } from '@app/core/services'
 
       app-modal .app-modal {
         position: fixed;
-        top: 0;
+        top: 30%;
         right: 0;
         bottom: 0;
         left: 0;
@@ -28,9 +29,11 @@ import { ModalService } from '@app/core/services'
       }
 
       app-modal .app-modal .app-modal-body {
+        height: 250px;
+        width: 40%;
         padding: 20px;
         background: #fff;
-        margin: 40px;
+        margin: 2.5em 2.5em 2.5em 25em;
       }
 
       app-modal .app-modal-background {
@@ -44,7 +47,7 @@ import { ModalService } from '@app/core/services'
         z-index: 900;
       }
 
-      body.app-modal-open {
+      body.modal-open {
         overflow: hidden;
       }
     `
@@ -53,7 +56,7 @@ import { ModalService } from '@app/core/services'
 
 
 export class ModalComponent implements OnInit {
-  
+
   @Input() id: string = '';
   private readonly element: any;
 
