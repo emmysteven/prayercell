@@ -29,12 +29,12 @@ spring:
             max-request-size: 1MB
             max-file-size: 1MB
 
-    server:
-        compression:
-            enabled: 'true'
-        port: 3000
-        error:
-            include-message: always
+server:
+    port: 3000
+    compression:
+        enabled: 'true'
+    error:
+        include-message: always
 
 logging:
     level:
