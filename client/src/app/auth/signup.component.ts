@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { first } from "rxjs/operators";
 
 import { AuthService, AlertService } from "../core/services";
@@ -13,7 +13,14 @@ import {IError} from "../core/models/error";
   ]
 })
 export class SignupComponent implements OnInit {
-  form: FormGroup = new FormGroup({});
+  form: FormGroup = new FormGroup({
+    firstName: new FormControl<string | null>(''),
+    lastName: new FormControl<string | null>(''),
+    email: new FormControl<string | null>(''),
+    phoneNumber: new FormControl<number | null>(null),
+    password: new FormControl<string | null>('')
+  });
+
   loading = false;
   submitted = false;
 
@@ -34,7 +41,7 @@ export class SignupComponent implements OnInit {
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       email: ['', Validators.required],
-      phoneNumber: ['', Validators.required],
+      phoneNumber: [null, Validators.required],
       password: ['', [Validators.required, Validators.minLength(8)]]
     });
   }
