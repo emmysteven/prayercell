@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms'
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms'
 import {Util} from '@app/core/Utils'
 import {IError} from '@app/core/models/error'
 import {ActivatedRoute, Router} from '@angular/router'
@@ -104,7 +104,16 @@ import {first} from 'rxjs/operators'
 })
 export class AddEditMemberComponent implements OnInit {
 
-  form: FormGroup = new FormGroup({});
+  form: FormGroup = new FormGroup({
+    firstname: new FormControl<string | null>(''),
+    lastname: new FormControl<string | null>(''),
+    gender: new FormControl<string | null>(''),
+    cell: new FormControl<string | null>(''),
+    email: new FormControl<string | null>(''),
+    telephone: new FormControl<number | null>(null),
+    birthDate: new FormControl<string | null>(''),
+    marriageDate: new FormControl<string | null>('')
+  });
   id: string = '';
   isAddMode: boolean = false;
   loading = false;
@@ -135,7 +144,7 @@ export class AddEditMemberComponent implements OnInit {
       gender: ['', Validators.required],
       cell: ['', Validators.required],
       email: ['', Validators.required],
-      telephone: ['', Validators.required],
+      telephone: [null, Validators.required],
       birthDate: [''],
       marriageDate: [''],
     });
